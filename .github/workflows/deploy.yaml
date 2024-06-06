@@ -41,5 +41,5 @@ jobs:
             --fail-with-body -sS --no-buffer\
             -H "Content-Type: application/json" \
             -d '{"secret_token": "${{ secrets[format('{0}_WEBHOOK_SECRET',env.ENV)] }}"}' \
-            "${{ secrets[format('{0}_WEBHOOK_URL',env.ENV)] }}?services=$encoded_services"
+            "${{ secrets[format('{0}_WEBHOOK_URL',env.ENV)] }}/hooks/deploy?services=$encoded_services"
     
