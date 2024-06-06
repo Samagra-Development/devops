@@ -1,0 +1,11 @@
+services:  
+  ingestor:
+    image: ${DOCKER_REGISTRY_URL}/${org}/ingestor:${INGESTOR_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    restart: always
+    depends_on:
+      - core_service
+      - auth_service
+    environment:
+      ODK_EXCEL_BASE_PATH: "/odk-ingest-files"
+      AUTH_BASE_URL: http://auth_service:3000
+      CORE_SERVICE_URL: http://core_service:5000

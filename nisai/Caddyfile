@@ -1,0 +1,32 @@
+{$DOMAIN_SCHEME}://api.{$DOMAIN_NAME} {
+
+    request_body {
+        max_size 100MB
+    }
+
+
+    handle_path /auth/login {
+        reverse_proxy http://auth_service:3000 {
+            rewrite /org/login
+            header_up Host {http.reverse_proxy.upstream.hostport}
+        }
+    }
+
+    handle_path /core/* {
+        reverse_proxy core_service:5000 {
+            header_up Host {http.reverse_proxy.upstream.hostport}
+        }
+    }
+
+    handle_path /ingestor/* {
+        reverse_proxy ingestor:3000 {
+            header_up Host {http.reverse_proxy.upstream.hostport}
+        }
+    }
+
+    handle_path /generation/* {
+        reverse_proxy generation_ms:3000 {
+            header_up Host {http.reverse_proxy.upstream.hostport}
+        }
+    }
+}

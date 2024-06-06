@@ -1,0 +1,21 @@
+include:
+  - ./common/monitoring/docker-compose.yaml
+  - ./common/minio/docker-compose.yaml
+  - ./common/environment/docker-compose.yaml
+  - ./bhasai/auth-service/docker-compose.yaml
+  - ./nisai/core-service/docker-compose.yaml
+  - ./nisai/ingestor/docker-compose.yaml
+  - ./nisai/generation-ms/docker-compose.yaml
+
+services:
+  caddy:
+    extends:
+      file: common/caddy/docker-compose.yaml
+      service: caddy
+    volumes:
+      - ./bhasai:/etc/caddy/bhasai
+      - ./nisai:/etc/caddy/nisai
+
+volumes:
+  caddy_data:
+  caddy_config:
