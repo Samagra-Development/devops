@@ -10,3 +10,8 @@ services:
       service: caddy
 #    volumes:
 #      - project-specific-volume-mappings:/etc/caddy/project-name
+
+
+volumes:
+  caddy_data:
+  caddy_config:
