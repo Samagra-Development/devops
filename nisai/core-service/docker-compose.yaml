@@ -1,0 +1,44 @@
+services:
+  core_db:
+    image: postgres:16
+    restart: always
+    volumes:
+      - core-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${CORE_DB_POSTGRES_USER:?Postgres user is not set}
+      POSTGRES_PASSWORD: ${CORE_DB_POSTGRES_PASSWORD:?Postgres password is not set}
+      POSTGRES_DB: ${CORE_DB_POSTGRES_DB:-postgres}
+
+  redis:
+    image: redis:7.2.4
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  core_service:
+    depends_on:
+      core_db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    image: ${DOCKER_REGISTRY_URL}/${org}/core-service:${CORE_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    restart: always
+    environment:
+      DATABASE_URL: "postgresql://${CORE_DB_POSTGRES_USER}:${CORE_DB_POSTGRES_PASSWORD}@core_db:5432/${CORE_DB_POSTGRES_DB:-postgres}"
+      AUTH_BASE_URL: http://auth_service:3000
+      NISAI_ADMIN_ORG_ID: ${NISAI_ADMIN_ORG_ID?NisAI admin org id not set}
+      QUEUE_HOST: redis
+      QUEUE_PORT: 6379
+      CACHE_HOST: redis
+      CACHE_PORT: 6379
+
+volumes:
+  core-data:

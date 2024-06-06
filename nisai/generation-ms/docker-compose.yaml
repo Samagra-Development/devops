@@ -1,0 +1,17 @@
+services: 
+  generation_ms:
+    image: ${DOCKER_REGISTRY_URL}/${org}/generation-ms:${GENERATION_MS_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    depends_on:
+      - ingestor
+      - auth_service
+    restart: always
+    volumes:
+      - datasets:/generated-datasets
+    environment:
+      DATASET_BUILDER_BASE_URL: ${DATASET_BUILDER_BASE_URL?DATASET_BUILDER_BASE_URL is not set}
+      AUTH_BASE_URL: "http://auth_service:3000"
+      GENERATED_DATASET_BASE_LOCATION: '/generated-datasets'
+      INGESTOR_SERVICE_BASE_URL: "http://ingestor:3000"
+
+volumes:
+  datasets:
