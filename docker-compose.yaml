@@ -6,6 +6,8 @@ include:
   - ./nisai/core-service/docker-compose.yaml
   - ./nisai/ingestor/docker-compose.yaml
   - ./nisai/generation-ms/docker-compose.yaml
+  - ./nisai/data-service/docker-compose.yaml
+  - ./nisai/dev-services/docker-compose.yaml
 
 services:
   caddy:

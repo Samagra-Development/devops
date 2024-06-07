@@ -1,0 +1,23 @@
+services:
+  hasura:
+    image: hasura/graphql-engine:v2.40.0.ubuntu
+    restart: always
+    depends_on:
+      - hasura_db
+    environment:
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:?Hasura Admin secret needed}
+      HASURA_GRAPHQL_DATABASE_URL: postgresql://myuser:mysecretpassword@hasura_db:5432/mydb
+
+  hasura_db:
+    image: postgres:13
+    restart: always
+    volumes:
+      - hasura-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: myuser
+      POSTGRES_DB: mydb
+
+volumes:
+  hasura-data:

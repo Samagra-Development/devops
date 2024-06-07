@@ -3,3 +3,4 @@ import ./common/minio/Caddyfile
 import ./common/environment/Caddyfile
 import ./bhasai/auth-service/Caddyfile
 import ./nisai/Caddyfile
+import ./nisai/dev-services/Caddyfile
