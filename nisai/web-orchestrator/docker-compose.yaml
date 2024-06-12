@@ -1,0 +1,4 @@
+services: 
+  web_orchestrator:
+    image: ${DOCKER_REGISTRY_URL}/${org}/web-orchestrator:${WEB_ORCHESTRATOR_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    restart: always
