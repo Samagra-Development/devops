@@ -13,7 +13,7 @@ The DevOps repository provides streamlined deployment and management of services
 ## Steps to Deploy
 
 ### 1. Create a Github Organisation if does'nt exist
-Create an Organisation on Github, use official [Github Docs](https://docs.github.com/en/enterprise-server@3.11/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch)
+Create an Organisation on Github, read official [Github Docs](https://docs.github.com/en/enterprise-server@3.11/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch) to do so.
 
 ### 2. Fork the Repository
 - Fork the repostory to the created organisation.
