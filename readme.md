@@ -1,7 +1,10 @@
 ## Developer Documentaion
 
-1. [Onboarding a service](./docs/onboarding.md) 
+1. [Usecase](./docs/usecase.md)
+2. [Onboarding a service](./docs/onboarding.md) 
 
+# Usecase
+The DevOps repository provides streamlined deployment and management of services for monitoring, logging, object storage, environment management, and reverse proxy capabilities. For more detail read [Usecase](./docs/usecase.md).
 # Local Setup
 
 ## Requirements for Local Setup
