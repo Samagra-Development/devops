@@ -25,7 +25,7 @@ jobs:
       run: |
         echo "ENABLE_FORCE_RECREATE=${{ vars.ENABLE_FORCE_RECREATE || 1 }}" >> ${GITHUB_ENV}
         echo "DISABLE_REMOVE_ORPHANS=${{ vars.DISABLE_REMOVE_ORPHANS || 0 }}" >> ${GITHUB_ENV}
-        echo "DISABLE_ANSI=${{ vars.DISABLE_ANSI || 0 }}" >> ${GITHUB_ENV}
+        echo "DISABLE_ANSI=${{ vars.DISABLE_ANSI || 1 }}" >> ${GITHUB_ENV}
         echo "ENABLE_GIT_PULL=${{ vars.ENABLE_GIT_PULL || 1 }}" >> ${GITHUB_ENV}
   
 
