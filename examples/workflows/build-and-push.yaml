@@ -1,3 +1,4 @@
+# .github/workflows/build-push.yml
 name: Build and Push Docker Image
 
 on:
@@ -7,6 +8,7 @@ on:
       - dev
   release:
     types: [published]
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -14,12 +16,11 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
       packages: write
+      actions: write  
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -39,19 +40,26 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # minimal
             type=pep440,pattern={{version}},value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
-            # branch event
             type=ref,event=branch
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
 
       - name: Build and Push Docker image
         uses: docker/build-push-action@v4
         with:
-          # build-args: 
           context: .
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+
+      - name: Trigger deployment workflow
+        if: ${{ success() && github.ref == 'refs/heads/dev' }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.PAT }}" \
+            https://api.github.com/repos/${{ github.repository_owner }}/devops/dispatches \
+            -d '{"event_type":"deploy-trigger","client_payload":{"environment":"dev","services":"YOUR_SERVICE_NAME"}}'
