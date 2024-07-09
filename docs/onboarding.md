@@ -26,7 +26,16 @@ Example: [/examples/workflows/build-and-push.yaml](../examples/workflows/build-a
 > [!IMPORTANT]  
 > In case you see 403 error, checkout [this](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#github-actions-access-for-packages-scoped-to-organizations)
 
+### To Auto Deploy Service
+- [Allow access via fine-grained personal access tokens in Organisation](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens)
+- [Configure actions to be triggered from another repository within the same organization](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository)
+- Generate a PAT (Personal Access Token) with appropriate scopes to initiate actions, [check permissions here](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
+- Store the PAT as [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) in repository setting, set name field as `PAT` 
+- Change the repo name if not devops in the step:Trigger deployment workflow <br/>
+  `https://api.github.com/repos/${{ github.repository_owner }}/devops/dispatches`
+- Replace YOUR_SERVICE_NAME with actuall service in <br/> `"client_payload":{"environment":"dev","services":"YOUR_SERVICE_NAME"}}'`
 
+- Push from the `dev` branch only to auto deploy
 
 Reference:
 - For further clarification and detailed instructions, you can refer to the  [GitHub documentation](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages).
