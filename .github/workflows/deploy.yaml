@@ -10,16 +10,19 @@ on:
       services:
         description: 'Services to deploy (space seperated)'
         required: true
+  repository_dispatch:
+    types:
+      - deploy-trigger
 
 jobs:
   deployment:
     runs-on: ubuntu-latest
-    name:  Deploy ${{inputs.services}} in ${{inputs.environment}}
+    name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || github.event.client_payload.environment}}
 
     steps:
     - name: Uppercase environment
       run: |
-        echo "ENV=`echo ${{inputs.environment}}  | tr '[:lower:]' '[:upper:]'`" >>${GITHUB_ENV}
+        echo "ENV=`echo ${{ inputs.environment || github.event.client_payload.environment }}  | tr '[:lower:]' '[:upper:]'`" >>${GITHUB_ENV}
     
     - name: Set Default Values to Repository Variable
       run: |
@@ -39,15 +42,14 @@ jobs:
             echo "::error::Secret '${{ format('{0}_WEBHOOK_URL',env.ENV) }}' is not set"
             exit 1
           fi
-          if [ -z "${{ github.event.inputs.services }}" ]; then
-            echo "::error::'${{ github.event.inputs.services }}' is empty"
+          if [ -z "${{ github.event.inputs.services || github.event.client_payload.services }}" ]; then
+            echo "::error::'${{ github.event.inputs.services || github.event.client_payload.services }}' is empty"
             exit 1
           fi     
           
-          encoded_services=$(python3 -c "from urllib.parse import quote; print(quote('${{ github.event.inputs.services }}'))")
+          encoded_services=$(python3 -c "from urllib.parse import quote; print(quote('${{ github.event.inputs.services ||  github.event.client_payload.services}}'))")
           curl -X POST \
             --fail-with-body -sS --no-buffer\
             -H "Content-Type: application/json" \
             -d '{"secret_token": "${{ secrets[format('{0}_WEBHOOK_PASSWORD',env.ENV)] }}", "ENABLE_FORCE_RECREATE":${{ env.ENABLE_FORCE_RECREATE }}, "DISABLE_REMOVE_ORPHANS":${{ env.DISABLE_REMOVE_ORPHANS }}, "DISABLE_ANSI":${{ env.DISABLE_ANSI }} ,"ENABLE_GIT_PULL":${{ env.ENABLE_GIT_PULL }}}' \
             "${{ secrets[format('{0}_WEBHOOK_URL',env.ENV)] }}/hooks/deploy?services=$encoded_services"
-    
