@@ -17,12 +17,12 @@ on:
 jobs:
   deployment:
     runs-on: ubuntu-latest
-    name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || github.event.client_payload.environment}}
+    name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || 'dev' }}
 
     steps:
     - name: Uppercase environment
       run: |
-        echo "ENV=`echo ${{ inputs.environment || github.event.client_payload.environment }}  | tr '[:lower:]' '[:upper:]'`" >>${GITHUB_ENV}
+        echo "ENV=`echo ${{ inputs.environment || 'dev' }}  | tr '[:lower:]' '[:upper:]'`" >>${GITHUB_ENV}
     
     - name: Set Default Values to Repository Variable
       run: |

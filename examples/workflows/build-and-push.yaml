@@ -56,6 +56,12 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+        
+      - name: Convert repository name to snake case
+        run: |
+          REPO_NAME=$(echo "${GITHUB_REPOSITORY}" | awk -F/ '{print $2}')
+          SNAKE_CASE_REPO_NAME=$(echo "${REPO_NAME}" | sed 's/\(.\)\([A-Z]\)/\1_\2/g' | tr '[:upper:]' '[:lower:]' | sed 's/^_//' | tr -s '_' | tr '[:upper:]' '[:lower:]')
+          echo "SERVICE=${SNAKE_CASE_REPO_NAME}" >> $GITHUB_ENV
 
       - name: Trigger deployment workflow
         if: ${{ success() && github.ref == 'refs/heads/dev' }}
@@ -64,4 +70,4 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.PAT }}" \
             https://api.github.com/repos/${{ github.repository_owner }}/${{ vars.DEVOPS_REPO_NAME || 'devops' }}/dispatches \
-            -d '{"event_type":"deploy-trigger","client_payload":{"environment":"dev","services":"${{ vars.SERVICE }}"}}'
+            -d '{"event_type":"deploy-trigger","client_payload":{"environment":"dev","services":"${{ vars.SERVICE  || env.SERVICE }}"}}'
