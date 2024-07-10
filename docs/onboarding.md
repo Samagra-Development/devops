@@ -31,9 +31,8 @@ Example: [/examples/workflows/build-and-push.yaml](../examples/workflows/build-a
 - [Configure actions to be triggered from another repository within the same organization](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository)
 - Generate a PAT (Personal Access Token) with appropriate scopes to initiate actions, [check permissions here](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
 - Store the PAT as [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) in repository setting, set name field as `PAT` 
-- Change the repo name if not devops in the step:Trigger deployment workflow <br/>
-  `https://api.github.com/repos/${{ github.repository_owner }}/devops/dispatches`
-- Create a [Repository Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository), with `NAME` as `SERIVCE` and `value` as `repository_name(in snake case)` 
+- If deployment repository name is not `devops` set a [Repository Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) named `DEPLOY_REPO` and value as repository_name
+- Create a [Repository Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository), with `NAME` as `SERIVCE` and `value` as `repository_name`(snake_case) 
 
 - Push from the `dev` branch only to auto deploy
 
