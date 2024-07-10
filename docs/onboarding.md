@@ -33,7 +33,7 @@ Example: [/examples/workflows/build-and-push.yaml](../examples/workflows/build-a
 - Store the PAT as [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) in repository setting, set name field as `PAT` 
 - Change the repo name if not devops in the step:Trigger deployment workflow <br/>
   `https://api.github.com/repos/${{ github.repository_owner }}/devops/dispatches`
-- Replace YOUR_SERVICE_NAME with actuall service in <br/> `"client_payload":{"environment":"dev","services":"YOUR_SERVICE_NAME"}}'`
+- Create a [Repository Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository), with `NAME` as `SERIVCE` and `value` as `repository_name(in snake case)` 
 
 - Push from the `dev` branch only to auto deploy
 
