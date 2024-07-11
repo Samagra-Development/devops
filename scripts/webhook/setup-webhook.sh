@@ -28,7 +28,8 @@ if [ -z "$WEBHOOK_PASSWORD" ]; then
     exit 1
 fi
 
-sed -i "s|\${PROJECT_DIR}|$(pwd)|g" "$SERVICE_FILE"
+sed -i "s|\${SCRIPT_DIR}|$SCRIPT_DIR|g" "$SERVICE_FILE"
+sed -i "s|\${PROJECT_ROOT}|$PROJECT_ROOT|g" "$SERVICE_FILE"
 sed -i "s|\${WEBHOOK_USER}|$(whoami)|g" "$SERVICE_FILE"
 sed -i "s|\${WEBHOOK_GROUP}|$(id -gn)|g" "$SERVICE_FILE"
 
