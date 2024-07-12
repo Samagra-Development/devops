@@ -1,0 +1,14 @@
+# Makefile.mock
+FORCE_RECREATE_FLAG := $(if $(filter 1,$(ENABLE_FORCE_RECREATE)),--force-recreate,)
+REMOVE_ORPHANS_FLAG := $(if $(or $(services),$(filter 1, $(DISABLE_REMOVE_ORPHANS))),,--remove-orphans)
+REMOVE_ANSI_FLAG := $(if $(filter 1,$(DISABLE_ANSI)),,--ansi never)
+
+DOCKER_COMPOSE_COMMAND=echo "Mock Docker Compose Command: docker compose $(REMOVE_ANSI_FLAG) -p bhasai"
+
+deploy: $(if $(filter 1,$(ENABLE_GIT_PULL)),git-pull,) $(if $(filter 1,$(DISABLE_PULL)),,pull build) reload-caddy
+	$(DOCKER_COMPOSE_COMMAND) up -d $(FORCE_RECREATE_FLAG) $(REMOVE_ORPHANS_FLAG) ${services}
+
+git-pull:
+	@echo "Mock: git pull"
+
+.PHONY: deploy reload-caddy pull build git-pull
