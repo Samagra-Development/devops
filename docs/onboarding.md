@@ -32,7 +32,7 @@ Example: [/examples/workflows/build-and-push.yaml](../examples/workflows/build-a
 - Generate a PAT (Personal Access Token) with appropriate scopes to initiate actions, [check permissions here](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
 - Store the PAT as [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) in repository setting, set name field as `PAT` 
 - If devops repository name is not `devops` set, the [Repository Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) named `DEVOPS_REPO_NAME` and value as the name of devops repository
-- If your repo name converted snake_case(repo_name) is not same as service, then set the [Repositor Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) named `SERVICE` and value as the name of service in snake_case
+- If your repository name in snake_case differs from the service name, set the [Repositor Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) named `SERVICE` and value as the name of service name in snake_case
 - Push from the `dev` branch only to auto deploy
 
 Reference:
