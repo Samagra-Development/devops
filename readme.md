@@ -54,6 +54,17 @@ In general every project requires observability, ci/cd pipelines, environment ma
 1. Go the *Actions* tab and open *Deploy Service* Action from the left bar
 2. Click on *Run workflow* and provide environment (this should be same as you used while setting up Action) and the service name you want to deploy
 
+
+## Running tests
+1. Before running tests, update the git submodules
+ ```
+git submodule init
+git submodule update
+```
+2. Command to run test
+```
+test/test_file_name.bats
+```
 ## Developer Documentaion
 
 1. [Onboarding a service](./docs/onboarding.md) 
