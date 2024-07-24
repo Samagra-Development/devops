@@ -20,8 +20,8 @@ fi
 
 echo "Creating systemd service file"
 cp "$TEMPLATE_FILE" "$SERVICE_FILE"
+echo "Systemd service file created"
 
-echo "Starting  Webhook"
 source <(grep "^WEBHOOK_PASSWORD=" .env)
 if [ -z "$WEBHOOK_PASSWORD" ]; then
     echo "ERROR: WEBHOOK_PASSWORD is not defined in .env"
@@ -36,6 +36,7 @@ sed -i "/\[Service\]/a Environment=\"WEBHOOK_PASSWORD=$WEBHOOK_PASSWORD\"" "$SER
 
 
 # Reload systemd to recognize the new or changed service file
+echo "Reloading daemon"
 sudo systemctl daemon-reload
 
 # Restart service if already running, otherwise start it
