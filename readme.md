@@ -44,6 +44,12 @@ In general every project requires observability, ci/cd pipelines, environment ma
 10. Run `sudo make setup-webhook` to start the webhook server
 11. Run `make deploy` to deploy all the services
 
+
+## Viewing Webhook Service Logs
+- To view all logs: `sudo journalctl -u webhook.service`
+- To view logs in real-time: `sudo journalctl -u webhook.service -f`
+- To view logs for specific date(change your dates accordingly): `sudo journalctl -u webhook.service --since "2024-07-23" --until "2024-07-24"`
+
 ## Setting up Github Action for CD
 
 1. Go to *Actions* tab in the repo and enable actions
