@@ -32,8 +32,25 @@ sed -i "s|\${SCRIPT_DIR}|$SCRIPT_DIR|g" "$SERVICE_FILE"
 sed -i "s|\${PROJECT_ROOT}|$PROJECT_ROOT|g" "$SERVICE_FILE"
 sed -i "s|\${WEBHOOK_USER}|$(whoami)|g" "$SERVICE_FILE"
 sed -i "s|\${WEBHOOK_GROUP}|$(id -gn)|g" "$SERVICE_FILE"
+sed -i "/\[Service\]/a Environment=\"WEBHOOK_PASSWORD=$WEBHOOK_PASSWORD\"" "$SERVICE_FILE"
 
+
+# Reload systemd to recognize the new or changed service file
 sudo systemctl daemon-reload
-sudo systemctl enable --now webhook.service
 
-echo "Webhook service started and enabled"
+# Restart service if already running, otherwise start it
+if sudo systemctl is-active --quiet webhook.service; then
+    echo "Restarting webhook service"
+    sudo systemctl restart webhook.service
+else
+    echo "Starting webhook service"
+    sudo systemctl enable --now webhook.service
+fi
+
+
+if sudo systemctl is-active --quiet webhook.service; then
+    echo "Webhook service started successfully"
+else
+    echo "Failed to start webhook service"
+    exit 1
+fi
