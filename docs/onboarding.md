@@ -26,14 +26,6 @@ Example: [/examples/workflows/build-and-push.yaml](../examples/workflows/build-a
 > [!IMPORTANT]  
 > In case you see 403 error, checkout [this](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#github-actions-access-for-packages-scoped-to-organizations)
 
-### To Auto Deploy Service
-- [Allow access via fine-grained personal access tokens in Organisation](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens)
-- [Configure actions to be triggered from another repository within the same organization](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository)
-- Generate a PAT (Personal Access Token) with appropriate scopes to initiate actions, [check permissions here](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
-- Store the PAT as [repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) in repository setting, set name field as `PAT` 
-- If devops repository name is not `devops` set, the [Repository Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) named `DEVOPS_REPO_NAME` and value as the name of devops repository
-- If your repository name in snake_case differs from the service name, set the [Repositor Variable](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) named `SERVICE` and value as the name of service name in snake_case
-- Push from the `dev` branch only to auto deploy
 
 Reference:
 - For further clarification and detailed instructions, you can refer to the  [GitHub documentation](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages).
@@ -41,6 +33,15 @@ Reference:
 ### 3. Add a workflow to test your image
 Example:  [/examples/workflows/docker-test.yaml](../examples/workflows/docker-test.yaml)
 
+### 4. To Auto Deploy Service
+- [Allow access via fine-grained personal access tokens in the organization](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens)
+- [Configure actions to be triggered from another repository within the same organization](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository)
+- Generate a Fine-Grained token (Personal Access Token) permissions required - Actions(Read and Write) and Content(Read and Write)
+- Store the PAT as repository secret, set name field as `PAT` 
+- If devops repository name is not `devops` set, the Repository Variable named `DEVOPS_REPO_NAME` and value as the name of devops repository
+- If your repository name in snake_case differs from the service name, set the Repositor Variable named `SERVICE` and value as the name of service name in snake_case
+- Create a repository secret `ENABLE_AUTO_DEPLOY` and set value for auto deployment to run for all environment given here , eg:`["main", "dev"]`
+- In your devops repository create a secret named `ALLOW_EXTERNAL_TRIGGER` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
 
 ## Adding your service
 
