@@ -15,18 +15,59 @@ on:
       - deploy-trigger
 
 jobs:
+  compare_environments:
+    runs-on: ubuntu-latest
+    outputs:
+      common_environments: ${{ steps.compare_environments.outputs.common_environments }}
+    steps:
+      - name: Compare environment 
+        id: compare_environments
+        run: |
+          # Fetch inputs and secrets
+          CLIENT_PAYLOAD_ENVIRONMENT='${{ toJson(github.event.client_payload.environment) }}'
+          
+          # Write the secret to a temporary file
+          echo '${{ secrets.ALLOW_EXTERNAL_TRIGGER }}' > allow_external_trigger.json
+
+          
+          ALLOW_EXTERNAL_TRIGGER=$(cat allow_external_trigger.json)
+
+          echo "ALLOW_EXTERNAL_TRIGGER: $ALLOW_EXTERNAL_TRIGGER"
+          
+          # Find common values using jq
+          COMMON_ENVIRONMENTS=$(jq -n --argjson client "$CLIENT_PAYLOAD_ENVIRONMENT" --argjson allow "$ALLOW_EXTERNAL_TRIGGER" \
+            '[ $client[] | select($allow[] == .) ]' | jq -c '.')
+
+          # Setting to dev if no common environment found 
+          if [ "$COMMON_ENVIRONMENTS" == "" ]; then
+            COMMON_ENVIRONMENTS='["dev"]'
+          fi
+          
+          echo "COMMON_ENVIRONMENTS: $COMMON_ENVIRONMENTS"
+          
+          # Export environment variable and write to file
+          echo "common_environments=$COMMON_ENVIRONMENTS" >> $GITHUB_OUTPUT
+
   deployment:
     runs-on: ubuntu-latest
-    name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || 'dev' }}
+    needs: compare_environments
+    strategy:
+      matrix:
+        env: ${{ fromJson(needs.compare_environments.outputs.common_environments) }}
+    name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || matrix.env }}
 
     steps:
     - name: Uppercase environment
       run: |
-        echo "ENV=`echo ${{ inputs.environment || 'dev' }}  | tr '[:lower:]' '[:upper:]'`" >>${GITHUB_ENV}
+        echo "ENV=`echo ${{ inputs.environment || matrix.env }}  | tr '[:lower:]' '[:upper:]'`" >>${GITHUB_ENV}
     
     - name: Set Default Values to Repository Variable
       run: |
-        echo "ENABLE_FORCE_RECREATE=${{ vars.ENABLE_FORCE_RECREATE || 1 }}" >> ${GITHUB_ENV}
+        if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+          echo "ENABLE_FORCE_RECREATE=0" >> ${GITHUB_ENV}
+        else
+          echo "ENABLE_FORCE_RECREATE=${{ vars.ENABLE_FORCE_RECREATE || 1 }}" >> ${GITHUB_ENV}
+        fi
         echo "DISABLE_REMOVE_ORPHANS=${{ vars.DISABLE_REMOVE_ORPHANS || 0 }}" >> ${GITHUB_ENV}
         echo "DISABLE_ANSI=${{ vars.DISABLE_ANSI || 1 }}" >> ${GITHUB_ENV}
         echo "ENABLE_GIT_PULL=${{ vars.ENABLE_GIT_PULL || 1 }}" >> ${GITHUB_ENV}
