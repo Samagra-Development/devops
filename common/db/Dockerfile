@@ -3,7 +3,7 @@ FROM samagragovernance/postgres:1.0.1-pg15
 ARG ENABLE_BARMAN
 ARG ID_RSA
 ARG ID_RSA_PUB 
-ARG BARMAN_SERVER
+ARG BARMAN_HOST
 
 ADD config/postgresql.conf.template /etc/postgresql/postgresql.conf.template
 ADD config/pg_hba.conf.template /etc/postgresql/pg_hba.conf.template

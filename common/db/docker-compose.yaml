@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         ENABLE_BARMAN: ${ENABLE_BARMAN}
-        BARMAN_SERVER: ${BARMAN_SERVER}
+        BARMAN_HOST: ${BARMAN_HOST}
         ID_RSA: ${ID_RSA}
         ID_RSA_PUB: ${ID_RSA_PUB}
     image: samagra-postgres-15-barman
@@ -28,7 +28,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:?Postgres user is not set in .env}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Postgres password is not set in .env}
-      BARMAN_SERVER: ${BARMAN_SERVER:?Barman server is not defined in .env}
+      BARMAN_HOST: ${BARMAN_HOST:?Barman host is not defined in .env}
 
 volumes:
   db:
