@@ -23,7 +23,6 @@ jobs:
       - name: Compare environment 
         id: compare_environments
         run: |
-          # Fetch inputs and secrets
           CLIENT_PAYLOAD_ENVIRONMENT='${{ toJson(github.event.client_payload.environment) }}'
           
           # Write the secret to a temporary file
