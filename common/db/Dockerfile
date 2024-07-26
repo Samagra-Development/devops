@@ -8,11 +8,18 @@ ARG BARMAN_HOST
 ADD config/postgresql.conf.template /etc/postgresql/postgresql.conf.template
 ADD config/pg_hba.conf.template /etc/postgresql/pg_hba.conf.template
 
-RUN apk update && \
+RUN if [ "$ENABLE_BARMAN" = "true" ]; then \
+    apk update && \
     apk add envsubst && \
     envsubst < /etc/postgresql/postgresql.conf.template > /etc/postgresql/postgresql.conf && \
-    envsubst < /etc/postgresql/pg_hba.conf.template > /etc/postgresql/pg_hba.conf;
- 
+    envsubst < /etc/postgresql/pg_hba.conf.template > /etc/postgresql/pg_hba.conf; \
+    else \
+     ln -s /var/lib/postgresql/data/pg_hba.conf /etc/postgresql/pg_hba.conf &\
+     ln -s /var/lib/postgresql/data/postgresql.conf /etc/postgresql/postgresql.conf; \
+fi
+
+     
+
 RUN if [ "$ENABLE_BARMAN" = "true" ]; then \
     apk update && \
     apk add openrc openssh-server openssh rsync && \
