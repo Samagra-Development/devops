@@ -1,0 +1,14 @@
+  services:
+    hasura:
+      image: hasura/graphql-engine:latest
+      profiles: ["devops"]
+      restart: always
+      environment:
+        HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/postgres
+        HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+        HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      healthcheck:
+        test: ['CMD', 'curl', '-f', 'http://localhost:8080/healthz']
+        interval: 10s
+        timeout: 10s
+        retries: 5
