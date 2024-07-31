@@ -1,0 +1,43 @@
+services:
+  superset:
+    image: ghcr.io/${org}/superset:${SUPERSET_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    profiles: ["devops","superset"]
+    command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
+    user: "root"
+    restart: always
+    <<: [*superset-environment , *superset-volumes]
+    depends_on:
+      - db
+      - redis
+      - clickhouse
+      - superset_init
+      - superset_worker
+      - superset_worker_beat
+
+  superset_init:
+    image: ghcr.io/${org}/superset:${SUPERSET_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    command: ["/app/docker/docker-init.sh"]
+    user: "root"
+    <<: [*superset-environment ,*superset-depends-on, *superset-volumes]
+
+
+  superset_worker:
+    image: ghcr.io/${org}/superset:${SUPERSET_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    command: ["/app/docker/docker-bootstrap.sh", "worker"]
+    restart: always
+    user: "root"
+    <<: [*superset-environment ,*superset-depends-on, *superset-volumes]
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME",
+        ]
+
+  superset_worker_beat:
+    image: ghcr.io/${org}/superset:${SUPERSET_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    command: ["/app/docker/docker-bootstrap.sh", "beat"]
+    restart: always
+    user: "root"
+    <<: [*superset-environment ,*superset-depends-on, *superset-volumes]
