@@ -1,0 +1,6 @@
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   all             all                                     trust
+host    all             all             localhost               trust
+host    replication     streaming_barman        ${BARMAN_HOST}/32       md5
+host    all             barman          ${BARMAN_HOST}/32               md5
+

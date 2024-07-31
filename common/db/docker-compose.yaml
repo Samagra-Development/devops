@@ -1,0 +1,29 @@
+services:
+  db:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        ENABLE_BARMAN: ${ENABLE_BARMAN:-false}
+        BARMAN_HOST: ${BARMAN_HOST}
+        DB_SSH_PUBLIC_KEY: ${DB_SSH_PUBLIC_KEY}
+        DB_SSH_PRIVATE_KEY: ${DB_SSH_PRIVATE_KEY}
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432/tcp"
+      - "2222:22/tcp"
+    command: -c 'config_file=/etc/postgresql/postgresql.conf' -c 'hba_file=/etc/postgresql/pg_hba.conf'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is not set in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is not set in .env}
+
+volumes:
+  db:
+

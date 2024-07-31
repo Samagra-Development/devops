@@ -4,6 +4,8 @@ REMOVE_ANSI_FLAG := $(if $(filter 1,$(DISABLE_ANSI)),,--ansi never)
 
 DOCKER_COMPOSE_COMMAND=docker compose $(REMOVE_ANSI_FLAG) -p bhasai
 
+setup-barman:
+	@./scripts/setup-barman.sh
 install-docker:
 	@./scripts/install-docker.sh
 
