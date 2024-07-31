@@ -2,7 +2,7 @@
 
 # Prompt messages
 PROMPT_SERVICE_NAME="Enter Service Name: "
-PROMPT_IMAGE_URL="Enter Image URL: "
+PROMPT_IMAGE_NAME="Enter Image NAME: "
 PROMPT_SERVICE_PORT="Enter Service Port: "
 EXPOSE_SERVICE="Enter Service Name to expose: "
 ENTER_YOUR_CHOICE="Enter your choice: "
@@ -56,7 +56,7 @@ update_docker_compose() {
 
   # Replace placeholders in the template with actual values
   template_content="${template_content//SERVICE_NAME/$SERVICE_NAME}"
-  template_content="${template_content//IMAGE_URL/${IMAGE_URL}}"
+  template_content="${template_content//IMAGE_NAME/${IMAGE_NAME}}"
 
   # Replace DEMO_SERVICE with SERVICE_NAME
   template_content="${template_content//DEMO_SERVICE/$SERVICE_NAME}"
@@ -126,7 +126,7 @@ expose_service() {
 # Function to handle onboarding a service
 onboard_service() {
   prompt_input "$PROMPT_SERVICE_NAME" "" SERVICE_NAME
-  prompt_input "$PROMPT_IMAGE_URL" "" IMAGE_URL
+  prompt_input "$PROMPT_IMAGE_NAME" "" IMAGE_NAME
 
   update_docker_compose
 }
