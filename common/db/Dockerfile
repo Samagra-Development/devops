@@ -7,6 +7,14 @@ ARG BARMAN_HOST
 
 ENV BARMAN_HOST=$BARMAN_HOST
 
+# Check if ENABLE_BARMAN is set to true, and if so, ensure other arguments are provided
+# Check if ENABLE_BARMAN is set to true, and if so, ensure other arguments are provided
+RUN if [ "$ENABLE_BARMAN" = "true" ]; then \
+        : "${DB_SSH_PRIVATE_KEY:?DB_SSH_PRIVATE_KEY is not set}"; \
+        : "${DB_SSH_PUBLIC_KEY:?DB_SSH_PUBLIC_KEY is not set}"; \
+        : "${BARMAN_HOST:?BARMAN_HOST is not set}"; \
+    fi
+
 ADD config/postgresql.conf.template /etc/postgresql/postgresql.conf.template
 ADD config/pg_hba.conf.template /etc/postgresql/pg_hba.conf.template
 
