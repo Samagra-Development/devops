@@ -1,0 +1,19 @@
+services:
+   uci_apis:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/uci-apis:${UCI_APIS_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${UCI_APIS_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${UCI_APIS_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      UCI_API_PSQL_DB_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/uci_apis"
+      REDIS_URL: redis://redis:6379/2
+      FUSIONAUTH_URL: http://fusionauth:9011
+      FUSIONAUTH_KEY: ${FUSIONAUTH_API_KEY}
+      ADMIN_TOKEN: ${UCI_ADMIN_TOKEN}
+      VAULT_ADDR: http://vault:8200
+      VAULT_USERNAME: ${VAULT_USERNAME}
+      VAULT_PASSWORD: ${VAULT_PASSWORD}
+      AUTH_SERVICE_URL: http://auth-service:3000
