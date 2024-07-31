@@ -3,8 +3,6 @@
 # Prompt messages
 PROMPT_SERVICE_NAME="Enter Service Name: "
 PROMPT_IMAGE_URL="Enter Image URL: "
-PROMPT_COMMAND="Enter Command: "
-PROMPT_RESTART_POLICY="Enter Restart Policy (e.g., always): "
 PROMPT_SERVICE_PORT="Enter Service Port: "
 EXPOSE_SERVICE="Enter Service Name to expose: "
 ENTER_YOUR_CHOICE="Enter your choice: "
@@ -58,12 +56,11 @@ update_docker_compose() {
 
   # Replace placeholders in the template with actual values
   template_content="${template_content//SERVICE_NAME/$SERVICE_NAME}"
-  template_content="${template_content//COMMAND/$COMMAND}"
-  template_content="${template_content//RESTART_POLICY/$RESTART_POLICY}"
-  
-  # Use the actual image URL
   template_content="${template_content//IMAGE_URL/${IMAGE_URL}}"
-  
+
+  # Replace DEMO_SERVICE with SERVICE_NAME
+  template_content="${template_content//DEMO_SERVICE/$SERVICE_NAME}"
+
   # Convert the template content to a valid YAML structure
   local service_yaml
   service_yaml=$(echo "$template_content" | yq eval -o=json | jq -c '.services')
@@ -130,8 +127,6 @@ expose_service() {
 onboard_service() {
   prompt_input "$PROMPT_SERVICE_NAME" "" SERVICE_NAME
   prompt_input "$PROMPT_IMAGE_URL" "" IMAGE_URL
-  prompt_input "$PROMPT_COMMAND" "" COMMAND
-  prompt_input "$PROMPT_RESTART_POLICY" "" RESTART_POLICY
 
   update_docker_compose
 }

@@ -1,10 +1,8 @@
 services:
   SERVICE_NAME:
-    image: ${DOCKER_REGISTRY_URL}/${org}/IMAGE_URL:${DEMO_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
-    command: COMMAND
+    image: ${DOCKER_REGISTRY_URL}/${org}/IMAGE_URL:${SERVICE_NAME_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
     deploy:
-      replicas: ${DEMO_SERVICE_REPLICAS:-1}
-    restart: RESTART_POLICY
-    mem_limit: ${DEMO_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
-    cpus: ${DEMO_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
-    # Removed environment, ports, depends_on, and volumes sections
+      replicas: ${SERVICE_NAME_REPLICAS:-1}
+    mem_limit: ${SERVICE_NAME_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${SERVICE_NAME_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    # Removed environment, ports, depends_on, command,restart and volumes sections
