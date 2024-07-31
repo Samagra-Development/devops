@@ -1,6 +1,6 @@
 services:
   SERVICE_NAME:
-    image: ${DOCKER_REGISTRY_URL:-'ghcr.io'}/${org}/IMAGE_URL:${SERVICE_NAME_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/IMAGE_URL:${SERVICE_NAME_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
     deploy:
       replicas: ${SERVICE_NAME_REPLICAS:-1}
     mem_limit: ${SERVICE_NAME_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
