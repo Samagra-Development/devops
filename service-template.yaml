@@ -1,6 +1,6 @@
 services:
   SERVICE_NAME:
-    image: ghcr.io/${org}/IMAGE_URL:${DEMO_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    image: ${DOCKER_REGISTRY_URL}/${org}/IMAGE_URL:${DEMO_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
     command: COMMAND
     deploy:
       replicas: ${DEMO_SERVICE_REPLICAS:-1}
