@@ -1,0 +1,53 @@
+  services:
+    autotune:
+      container_name: autotune
+      image: ${DOCKER_REGISTRY_URL}/${org}/autotune:${AUTOTUNE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+      profiles: ['application']
+      restart: always
+      mem_limit: ${AUTOTUNE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+      cpus: ${AUTOTUNE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+      command: bash -c "poetry install && python manage.py database && python manage.py runserver 0.0.0.0:8000"
+      environment:
+        DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/autotune"
+        REDIS_URL: redis://redis:6379/7
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        MINIO_BASE_URL: "cdn-api.${DOMAIN_NAME}"
+        MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+        MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+        MINIO_BUCKET: autotune
+        MINIO_SECURE_CONN: "True"
+        CELERY_MAX_RETRIES: ${CELERY_MAX_RETRIES}
+        DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+        HUGGING_FACE_USERNAME: ${HUGGING_FACE_USERNAME}
+        HUGGING_FACE_TOKEN: ${HUGGING_FACE_TOKEN}
+        GITHUB_PAT: ${GITHUB_PAT}
+
+    autotune_celery_worker:
+      container_name: autotune-celery-worker
+      image: ${DOCKER_REGISTRY_URL}/${org}/autotune:${AUTOTUNE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+      profiles: ['application']
+      restart: always
+      mem_limit: ${AUTOTUNE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+      cpus: ${AUTOTUNE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+      command: bash -c "poetry install && celery -A autotune worker --loglevel=info -P gevent"
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: 1
+                capabilities: [gpu]
+      environment:
+        DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/autotune"
+        REDIS_URL: redis://redis:6379/7
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        MINIO_BASE_URL: "cdn-api.${DOMAIN_NAME}"
+        MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+        MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+        MINIO_BUCKET: autotune
+        MINIO_SECURE_CONN: "True"
+        CELERY_MAX_RETRIES: ${CELERY_MAX_RETRIES}
+        DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+        HUGGING_FACE_USERNAME: ${HUGGING_FACE_USERNAME}
+        HUGGING_FACE_TOKEN: ${HUGGING_FACE_TOKEN}
+        GITHUB_PAT: ${GITHUB_PAT} 
