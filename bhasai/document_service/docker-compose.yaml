@@ -1,0 +1,22 @@
+services:
+  document_service:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/document-service:${DOCUMENT_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${DOCUMENT_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${DOCUMENT_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/document_service"
+      MINIO_ENDPOINT: "minio"
+      MINIO_PORT: "9000"
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: document-service
+      MINIO_SECURE_CONN: "False"
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      PDF_PARSER_URL: http://pdf_parser:8000
+      YT_PARSER_URL: http://yt_parser:8000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 4
+      AI_TOOLS_EMBEDDING_BASE_URL: {$DOMAIN_SCHEME:-https}://ai-tools.{$DOMAIN_NAME}
+      AI_TOOLS_BATCH_SIZE: ${AI_TOOLS_EMBEDDING_BATCH_SIZE}
