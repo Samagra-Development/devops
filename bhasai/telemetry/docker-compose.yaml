@@ -10,4 +10,4 @@ services:
       CLICKHOUSE_DB: ${CLICKHOUSE_DB}
       CLICKHOUSE_USER: ${CLICKHOUSE_USER}
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
-      AUTH_SERVICE_URL: http://auth-service:3000
+      AUTH_SERVICE_URL: http://auth_service:3000
