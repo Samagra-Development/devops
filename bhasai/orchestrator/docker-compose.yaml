@@ -1,0 +1,9 @@
+services:
+  orchestrator:
+    image: ${DOCKER_REGISTRY_URL}/${org}/orchestrator:${ORCHESTRATOR_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    mem_limit: ${ORCHESTRATOR_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${ORCHESTRATOR_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    restart: always
+    environment:
+      OUTBOUND_SERVICE_BASE_URL: "http://inboundjs:3000/outbound"
+      ENVIRONMENT: ${env}
