@@ -1,3 +1,3 @@
-{$DOMAIN_SCHEME}://document_service.{$DOMAIN_NAME} {
-    reverse_proxy document_service:3000
+{$DOMAIN_SCHEME}://document-service.{$DOMAIN_NAME} {
+    reverse_proxy document-service:3000
 }
