@@ -1,0 +1,3 @@
+{$DOMAIN_SCHEME}://bff.{$DOMAIN_NAME} {
+    reverse_proxy bff:3000 
+}
