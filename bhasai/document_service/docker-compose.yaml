@@ -1,6 +1,6 @@
 services:
   document_service:
-    image: ${DOCKER_REGISTRY_URL}/${org}/document-service:${DOCUMENT_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?IMAGE_TAG is not set}}
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/document-service:${DOCUMENT_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
     restart: always
     mem_limit: ${DOCUMENT_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
     cpus: ${DOCUMENT_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
