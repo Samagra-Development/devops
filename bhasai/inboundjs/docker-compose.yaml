@@ -1,0 +1,13 @@
+services:
+  inboundjs:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/inbound-js:${INBOUNDJS_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    mem_limit: ${INBOUNDJS_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${INBOUNDJS_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    restart: always
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/inboundjs"
+      ORCHESTRATOR_API_ENDPOINT: "http://orchestrator:3000"
+      UCI_API_BASE_URL: http://uci-apis:3000
+      UCI_API_TOKEN: ${UCI_ADMIN_TOKEN}
+      TELEMETRY_SERVICE_HOST: http://telemetry:3000
+      ENVIRONMENT: ${env}

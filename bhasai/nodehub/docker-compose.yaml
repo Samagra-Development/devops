@@ -1,0 +1,11 @@
+services:
+  nodehub:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/nodehub:${NODEHUB_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    mem_limit: ${NODEHUB_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${NODEHUB_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    restart: always
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/nodehub"
+      AUTH_SERVICE_URL: "http://auth_service:3000"
+      REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
+      ENVIRONMENT: ${env}

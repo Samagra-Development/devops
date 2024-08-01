@@ -1,0 +1,3 @@
+{$DOMAIN_NAME}://admin.{$DOMAIN_NAME} {
+    reverse_proxy admin:3000
+}
