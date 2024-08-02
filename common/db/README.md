@@ -33,7 +33,12 @@ D. Copy the IP address of your postgress container using below command.
 
 
 ### STEP 3 Steps to setup Barman 
-A. Login to barman server and switch to root user using `sudo -i`
+A. Login to barman server and switch to root user using `sudo -i` and install required packages 
+
+`apt-get update`
+
+`apt-get install build-essential -y`
+
 
 B. Add DNS entry in /etc/hosts file for postgres db server / container.
 
