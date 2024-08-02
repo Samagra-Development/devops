@@ -1,0 +1,7 @@
+{$DOMAIN_SCHEME}://{$DOMAIN_NAME} {
+    {$TLS_ENTRY}
+
+    import ./common/monitoring/Caddyfile.SDC
+    import ./bhasai/Caddyfile.SDC
+
+}
