@@ -29,7 +29,7 @@ now exit from db container using `exit` command twice.
 
 
 ### STEP 3 Steps to setup Barman 
-A. Login to barman server and sitch to root user using `sudo -i`
+A. Login to barman server and switch to root user using `sudo -i`
 
 B. Add DNS entry in /etc/hosts file for postgres db server / container.
 
