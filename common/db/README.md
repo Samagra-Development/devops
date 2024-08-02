@@ -26,6 +26,10 @@ C. Get the public key which will be used to setup barman later.
 
 now exit from db container using `exit` command twice.
 
+D. Copy the IP address of your postgress container using below command.
+
+`docker exec -it DB_CONTAINER_ID ip addr show`
+
 
 
 ### STEP 3 Steps to setup Barman 
