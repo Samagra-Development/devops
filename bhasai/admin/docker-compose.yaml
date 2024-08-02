@@ -13,4 +13,5 @@ services:
         NEXT_PUBLIC_TELEMETRY_API_URL:  ${DOMAIN_SCHEME:-https}://telemetry.${DOMAIN_NAME}
         NEXT_PUBLIC_FLOWISE_URL: ${NEXT_PUBLIC_FLOWISE_URL}
         NEXT_PUBLIC_AUTOTUNE_API_URL: ${DOMAIN_SCHEME:-https}://autotune.${DOMAIN_NAME}
+        SERVE_PATH: ""
     restart: always
