@@ -26,10 +26,9 @@ C. Get the public key which will be used to setup barman later.
 
 now exit from db container using `exit` command twice.
 
-D. Copy the IP address of your postgress container using below command.
+D. Copy the IP address of your machine where db container is running ( do not run this in container).
 
-`docker exec -it DB_CONTAINER_ID ip addr show`
-
+` ip addr show` copy the IP this will be used when setting up DNS entry in barman server.
 
 
 ### STEP 3 Steps to setup Barman 
@@ -42,7 +41,7 @@ A. Login to barman server and switch to root user using `sudo -i` and install re
 
 B. Add DNS entry in /etc/hosts file for postgres db server / container.
 
-`vi /etc/hosts` add `POSTGRES_IP   mydb`  replace POSTGRES_IP with the actual IP address of DB server / container and 'mydb' would be the HOSTNAME for your db server which will be required in next step during barman setup.
+`vi /etc/hosts` add `POSTGRES_IP   mydb`  replace POSTGRES_IP with the actual IP address of DB server / container. 'mydb' would be the HOSTNAME for your db server which will be required in next step during barman setup.
 
 C. Run `make setup-barman` to setup barman.
 
