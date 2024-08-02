@@ -147,23 +147,5 @@ if ! sudo crontab -u barman -l 2>/dev/null | grep -q "barman cron"; then
 else
     echo "barman cron job already set."
 fi
-sleep 10s
-### Create replication slot if not already created
-if ! sudo -u barman barman show-server $host_name | grep -q "Slot name: $host_name"; then
-    echo "Creating slot for receiving wals..."
-    #sudo -u barman barman receive-wal --create-slot $host_name
-else
-    echo "Replication slot $host_name already exists."
-fi
 
-### Check the status of the db server
-echo "Checking db server status..."
-sleep 15s
-sudo -u barman barman check $host_name
-
-### Synchronize barman with postgres if necessary
-echo "Synchronizing barman with postgresdb..."
-sleep 5s
-
-echo "Script execution completed."
-
+echo "Barman Installation completed............"
