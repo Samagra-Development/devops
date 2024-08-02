@@ -1,8 +1,8 @@
 ### Generating Key Pair for DB
 
-1. RUN `ssh-keygen -t rsa` to generate a key pair
-2. Set value of `cat ~/.ssh/id_rsa | base64 -w 0` in DB_SSH_PRIVATE_KEY (change the location of private key in command if needed)
-3. Set value of `cat ~/.ssh/id_rsa.pub | base64 -w 0` in DB_SSH_PUBLIC_KEY (change the location of private key in command if needed)
+1. RUN `ssh-keygen -t rsa -f /opt/id_rsa` to generate a key pair
+2. Set value of `cat /opt/id_rsa | base64 -w 0` in DB_SSH_PRIVATE_KEY (change the location of private key in command if needed)
+3. Set value of `cat /opt/id_rsa.pub | base64 -w 0` in DB_SSH_PUBLIC_KEY (change the location of private key in command if needed)
 
 ### Steps to follow after the db container is started (only if you have enabled barman)
 
