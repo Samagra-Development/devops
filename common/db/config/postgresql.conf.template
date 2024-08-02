@@ -1,4 +1,4 @@
 listen_addresses = '*'
 wal_level = replica
 archive_mode = on
-archive_command = 'rsync -a %p barman@${BARMAN_HOST}:/var/lib/barman/pg_db/incoming/%f'
+archive_command = 'rsync -a %p barman@${BARMAN_HOST}:/var/lib/barman/mydb/incoming/%f'
