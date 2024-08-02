@@ -1,8 +1,10 @@
 ### STEP 1 Generate keypair for for postgres
 
-A. RUN `ssh-keygen -t rsa -f /opt/id_rsa` to generate a key pair
-B. Set value of `cat /opt/id_rsa | base64 -w 0` in DB_SSH_PRIVATE_KEY (change the location of private key in command if needed)
-C. Set value of `cat /opt/id_rsa.pub | base64 -w 0` in DB_SSH_PUBLIC_KEY (change the location of private key in command if needed)
+A. RUN `ssh-keygen -t rsa -f /opt/id_rsa` to generate a key pair. 
+
+B. Set value of `cat /opt/id_rsa | base64 -w 0` in DB_SSH_PRIVATE_KEY (change the location of private key in command if needed). 
+
+C. Set value of `cat /opt/id_rsa.pub | base64 -w 0` in DB_SSH_PUBLIC_KEY (change the location of private key in command if needed).
 
 ### STEP 2 Follow after the db container is started (only if you have enabled barman)
 
