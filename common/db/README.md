@@ -6,6 +6,8 @@ B. Set value of `cat /opt/id_rsa | base64 -w 0` in DB_SSH_PRIVATE_KEY (change th
 
 C. Set value of `cat /opt/id_rsa.pub | base64 -w 0` in DB_SSH_PUBLIC_KEY (change the location of private key in command if needed).
 
+---
+
 ### STEP 2 Follow after the db container is started (only if you have enabled barman)
 
 A. Currently the ssh server doesn't start automatically, run `docker exec -it DB_CONTAINER_ID /usr/sbin/sshd` to start the ssh server inside the db container.
@@ -30,6 +32,7 @@ D. Copy the IP address of your machine where db container is running ( do not ru
 
 ` ip addr show` copy the IP this will be used when setting up DNS entry in barman server.
 
+---
 
 ### STEP 3 Steps to setup Barman 
 A. Login to barman server and switch to root user using `sudo -i` and install required packages 
@@ -63,6 +66,8 @@ D. Switch to barman user to generate keypair for barman.
 E. Add public key of postgres in barman user's .ssh/authorized_keys
 
 `vi ~/.ssh/authorized_keys` Paste the key which we copied in STEP 2.C
+
+--- 
 
 ### STEP 4 add barman's public key (Refer to STEP 3.D) to postgres db user's .ssh/authorized_keys file.
 A. Connect to DB server / container.
