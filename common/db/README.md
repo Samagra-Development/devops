@@ -22,7 +22,7 @@ B. Setup the barman and streaming_barman user which is required to setup barman 
 
 C. Get the public key which will be used to setup barman later.
 
-`cat ~/.ssh/id_rsa.pu` Copy this somewhere as it will be used later in setting up key baed auth with barman.
+`cat ~/.ssh/id_rsa.pub` Copy this somewhere as it will be used later in setting up key baed auth with barman.
 
 now exit from db container using `exit` command twice.
 
