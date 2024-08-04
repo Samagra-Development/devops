@@ -78,6 +78,10 @@ A. Connect to DB server / container.
 
 `vi ~/.ssh/authorized_keys` PASTE the content copied from STEP 3.D. Now exit from container using `exit` command twice.
 
-### STEP 5  Test the replication in barman server using barman user after waiting for 2-3 minutes.
+### STEP 5  Restart postgres container
+
+Connect to machine where postgres db container/service is running and run `docker restart DB_CONTAINER_ID` and then run `docker exec -it DB_CONTAINER_ID /usr/sbin/sshd`.
+
+### STEP 6 : Test the replication in barman server using barman user after waiting for 2-3 minutes.
 `barman check mydb` 
 
