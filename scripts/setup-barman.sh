@@ -141,11 +141,11 @@ fi
 '
 
 ### Set up barman cron job if not already set
-if ! sudo crontab -u barman -l 2>/dev/null | grep -q "barman cron"; then
-    echo "Setting up barman cron for receiving wals..."
-    (sudo crontab -u barman -l 2>/dev/null; echo "* * * * * barman cron") | sudo crontab -u barman -
-else
-    echo "barman cron job already set."
-fi
+#if ! sudo crontab -u barman -l 2>/dev/null | grep -q "barman cron"; then
+#    echo "Setting up barman cron for receiving wals..."
+#    (sudo crontab -u barman -l 2>/dev/null; echo "* * * * * barman cron") | sudo crontab -u barman -
+#else
+#    echo "barman cron job already set."
+#fi
 
 echo "Barman Installation completed............"
