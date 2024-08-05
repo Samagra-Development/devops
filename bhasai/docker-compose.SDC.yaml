@@ -17,3 +17,4 @@ include:
   - ./user_management_service/docker-compose.SDC.yaml
   - ./vault/docker-compose.yaml
   - ./yt_parser/docker-compose.SDC.yaml
+  - ./flowise/docker-compose.SDC.yaml

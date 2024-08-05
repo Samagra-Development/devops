@@ -1,0 +1,10 @@
+services:
+  admin:
+    build:
+      context: https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${org}/flowise.git#${APP_GITHUB_BRANCH:-${DEFAULT_GITHUB_BRANCH:?DEFAULT_GITHUB_BRANCH is not set}}
+      args:
+        REACT_APP_UCI_API: ${DOMAIN_SCHEME:-https}://uci-apis.${DOMAIN_NAME}
+        REACT_APP_SOCKET_URL: ${DOMAIN_SCHEME:-https}://transport-socket.${DOMAIN_NAME}
+        REACT_APP_REGISTRY_BASE_URL: ${DOMAIN_SCHEME:-https}://nodehub.${DOMAIN_NAME}
+        SERVE_PATH: ""
+    restart: always
