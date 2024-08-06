@@ -1,5 +1,5 @@
 services:
-  admin:
+  flowise:
     build:
       context: https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${org}/flowise.git#${FLOWISE_GITHUB_BRANCH:-${DEFAULT_GITHUB_BRANCH:?DEFAULT_GITHUB_BRANCH is not set}}
       args:
