@@ -15,3 +15,4 @@ import ./uci_apis/Caddyfile.SDC
 import ./user_management_service/Caddyfile.SDC
 import ./yt_parser/Caddyfile.SDC
 import ./flowise/Caddyfile.SDC
+import ./app/Caddyfile.SDC
