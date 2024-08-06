@@ -12,7 +12,7 @@ services:
         NEXT_PUBLIC_BFF_API_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/bff
         NEXT_PUBLIC_USER_SERVICE_APP_ID: ${NEXT_PUBLIC_USER_SERVICE_APP_ID}
         NEXT_PUBLIC_JWKS_URI: 'http://fusionauth:9011/.well-known/jwks.json'
-        NEXT_PUBLIC_USER_SERVICE_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/user
+        NEXT_PUBLIC_USER_SERVICE_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/user-service
         NEXT_PUBLIC_ORG_ID: ${NEXT_PUBLIC_ORG_ID}
         NEXT_PUBLIC_DEBUG: ${NEXT_PUBLIC_DEBUG}
         NEXT_PUBLIC_SOCKET_PATH: '/transport-socket/socket.io'
