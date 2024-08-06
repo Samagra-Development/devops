@@ -16,7 +16,7 @@ jobs:
 
     - name: Run custom update script
       run: |
-        ./scripts/generate-combined-sample-env.sh
+        ./scripts/generate-combined-sample-env.sh ./bhasai ./common
 
     - name: Commit changes
       run: |

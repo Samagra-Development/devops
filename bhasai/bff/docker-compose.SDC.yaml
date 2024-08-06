@@ -36,4 +36,4 @@ services:
       INBOUNDJS_BASE_URL: http://inboundjs:3000
       DOCUMENT_SERVICE_BASE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/document-service
       AZURE_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/ai-tools/text_translation/azure_dict/remote/
-      USER_SERVICE_ADMIN_API_KEY: ${USER_SERVICE_ADMIN_API_KEY}
+      USER_SERVICE_ADMIN_API_KEY: ${ADMIN_API_KEY}
