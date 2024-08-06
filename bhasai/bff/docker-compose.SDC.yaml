@@ -13,7 +13,6 @@ services:
       BFF_BASE_URL: http://bff:3000
       EXCEL_PARSER_URL: http://excel_parser:8000
       DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/bff?sslmode=disable&connect_timeout=100"
-      JWKS_URI: ${APP_JWKS_URI}
       MINIO_PDF_BUCKET: bff
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_ENDPOINT: ${DOMAIN_SCHEME:-https}://cdn-api.${DOMAIN_NAME}
@@ -26,7 +25,6 @@ services:
       REDIS_DB: 8
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      USER_SERVICE_BASE_URL: http://user_service:3000
       OUTBOUND_BASE_URL: http://inboundjs:3000/outbound
       TRANSPORT_SOCKET_BASE_URL: http://transport_socket:3000
       UCI_APIS_BASE_URL: http://uci_apis:3000
@@ -34,15 +32,8 @@ services:
       ULCA_CONFIG_URL: ${ULCA_CONFIG_URL}
       ULCA_USER_ID: ${ULCA_USER_ID}
       YT_PARSER_URL: http://yt_parser:8000
-      CHAT_WITH_DOCS_ORG_OWNER_EMAIL: ${CHAT_WITH_DOCS_ORG_OWNER_EMAIL}
-      CHAT_WITH_DOCS_ORG_OWNER_PASSWORD: ${CHAT_WITH_DOCS_ORG_OWNER_PASSWORD}
-      CHAT_WITH_DOCS_PASSWORD_KEY: ${CHAT_WITH_DOCS_PASSWORD_KEY}
-      CHAT_WITH_DOCS_ORG_ID: ${CHAT_WITH_DOCS_ORG_ID}
-      REGISTRY_URL: ${REGISTRY_URL}
+      REGISTRY_URL: https://github.com/BharatSahAIyak/packages/blob/main/packages/transformers/registry.json
       INBOUNDJS_BASE_URL: http://inboundjs:3000
-      WEATHER_VISUAL_CROSSING_BASE_URL: ${WEATHER_VISUAL_CROSSING_BASE_URL}
-      WEATHER_VISUAL_CROSSING_API_KEY: ${WEATHER_VISUAL_CROSSING_API_KEY}
       DOCUMENT_SERVICE_BASE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/document-service
-      AZURE_URL: ${AZURE_URL}
+      AZURE_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/ai-tools/text_translation/azure_dict/remote/
       USER_SERVICE_ADMIN_API_KEY: ${USER_SERVICE_ADMIN_API_KEY}
-      USER_SERVICE_URL: ${USER_SERVICE_URL}
