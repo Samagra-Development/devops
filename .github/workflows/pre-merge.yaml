@@ -1,0 +1,27 @@
+name: Pre-Merge Update
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  update-code:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: Run custom update script
+      run: |
+        ./scripts/generate-combined-sample-env.sh
+
+    - name: Commit changes
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git add .
+        git commit -m "Update code before merge" || echo "No changes to commit"
+        git push origin ${{ github.head_ref }}
