@@ -16,7 +16,8 @@ services:
     extends:
       file: common/caddy/docker-compose.yaml
       service: caddy
-#    volumes:
+    volumes:
+      - ./bhasai:/etc/caddy/bhasai
 #      - project-specific-volume-mappings:/etc/caddy/project-name
 
 

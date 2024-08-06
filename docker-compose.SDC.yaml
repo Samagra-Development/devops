@@ -16,7 +16,8 @@ services:
     extends:
       file: common/caddy/docker-compose.SDC.yaml
       service: caddy
-#    volumes:
+    volumes:
+      - ./bhasai:/etc/caddy/bhasai
 #      - ./certs:/certs
 
 
