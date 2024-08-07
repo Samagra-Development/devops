@@ -16,6 +16,9 @@ setup-daemon:
 	
 setup-webhook:
 	@./scripts/webhook/setup-webhook.sh
+
+generate-env:
+	@./scripts/generate-env.sh
 	
 reload-caddy:
 	@echo "Reloading caddy"
