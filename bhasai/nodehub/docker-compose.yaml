@@ -7,5 +7,5 @@ services:
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/nodehub"
       AUTH_SERVICE_URL: "http://auth_service:3000"
-      REGISTRY_BASE_URL: ${REGISTRY_BASE_URL}
-      ENVIRONMENT: ${env}
+      REGISTRY_BASE_URL: https://raw.githubusercontent.com/BharatSahAIyak/packages/main/packages/transformers/registry.json
+      ENVIRONMENT: ${env:-dev}

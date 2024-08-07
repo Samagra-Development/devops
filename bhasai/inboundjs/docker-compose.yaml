@@ -10,4 +10,4 @@ services:
       UCI_API_BASE_URL: http://uci-apis:3000
       UCI_API_TOKEN: ${UCI_ADMIN_TOKEN}
       TELEMETRY_SERVICE_HOST: http://telemetry:3000
-      ENVIRONMENT: ${env}
+      ENVIRONMENT: ${env:-dev}

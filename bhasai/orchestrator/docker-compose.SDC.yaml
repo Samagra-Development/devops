@@ -6,4 +6,4 @@ services:
     restart: always
     environment:
       OUTBOUND_SERVICE_BASE_URL: "http://inboundjs:3000/outbound"
-      ENVIRONMENT: ${env}
+      ENVIRONMENT: ${env:-dev}

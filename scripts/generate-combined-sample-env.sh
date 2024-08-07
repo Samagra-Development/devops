@@ -14,8 +14,8 @@ extract_env_vars() {
   echo "Processing file: $1"
   # Extract variables and their defaults, then filter out unwanted ones 
   grep -Eo '\${[^}]+}' "$1" | sed -e 's/[${}]//g' -e 's/:-\([^$]*\)/=\1/' | \
-  grep -Eo '^[^:-]+' | sort -u  | \
-  grep -Ev '(MEM_LIMIT|CPU_LIMIT|IMAGE_TAG|GITHUB_BRANCH)$' >> "$OUTPUT_FILE"
+  sed 's/:?.*$//' | \
+  grep -Ev '(MEM_LIMIT|CPU_LIMIT|IMAGE_TAG|GITHUB_BRANCH)' >> "$OUTPUT_FILE"
 }
 
 
