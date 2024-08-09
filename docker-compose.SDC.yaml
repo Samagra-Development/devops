@@ -9,6 +9,8 @@ include:
  - ./common/db/docker-compose.yaml
 #  - ./common/registry/docker-compose.yaml
  - ./bhasai/docker-compose.SDC.yaml
+ - ./common/superset/docker-compose.yaml
+
 
 
 services:
