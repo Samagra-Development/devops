@@ -5,6 +5,9 @@ SDC := $(if $(filter 1,$(SDC)),-f docker-compose.SDC.yaml,)
 
 DOCKER_COMPOSE_COMMAND=docker compose ${SDC} $(REMOVE_ANSI_FLAG) -p bhasai
 
+generate:
+	@./bhasai/ai_tools/generate.sh
+
 install-docker:
 	@./scripts/install-docker.sh
 
@@ -27,7 +30,7 @@ reload-caddy:
 	@echo "Reloading caddy"
 	$(DOCKER_COMPOSE_COMMAND) exec -w /etc/caddy caddy caddy reload || true
 
-deploy: $(if $(filter 1,$(ENABLE_GIT_PULL)),git-pull,) $(if $(filter 1,$(DISABLE_PULL)),,pull build) reload-caddy
+deploy: generate $(if $(filter 1,$(ENABLE_GIT_PULL)),git-pull,) $(if $(filter 1,$(DISABLE_PULL)),,pull build) reload-caddy
 	$(DOCKER_COMPOSE_COMMAND)  up -d $(FORCE_RECREATE_FLAG) $(REMOVE_ORPHANS_FLAG) ${services}
 	
 restart:

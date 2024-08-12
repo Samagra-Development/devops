@@ -17,3 +17,4 @@ include:
   - ./user_management_service/docker-compose.yaml
   - ./vault/docker-compose.yaml
   - ./yt_parser/docker-compose.yaml
+  - ./ai_tools/docker-compose.yaml

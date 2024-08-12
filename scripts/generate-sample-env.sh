@@ -45,3 +45,7 @@ if [[ -s "$OUTPUT_FILE" ]]; then
 else
   echo "No environment variables found in the specified files."
 fi
+
+sed -E -i "s/^([A-Za-z0-9_]+)=([^\n]*)$/\1='\2'/; s/^([A-Za-z0-9_]+)$/\1=/" $OUTPUT_FILE
+
+awk -F= '!seen[$1]++ || $2 != ""' $OUTPUT_FILE > temp_file && mv temp_file $OUTPUT_FILE

@@ -14,3 +14,4 @@ import ./transport_socket/Caddyfile
 import ./uci_apis/Caddyfile
 import ./user_management_service/Caddyfile
 import ./yt_parser/Caddyfile 
+import ./ai_tools/Caddyfile

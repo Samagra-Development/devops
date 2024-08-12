@@ -1,0 +1,8 @@
+services:
+  fake:
+    environment:
+      DEFAULT_GITHUB_BRANCH: ${DEFAULT_GITHUB_BRANCH:-dev}
+      DEFAULT_IMAGE_TAG: ${DEFAULT_IMAGE_TAG:-dev}
+      org: ${org:-bharatsahaiyak}
+      AI_SERVICES: ${AI_SERVICES:-'[]'}
+      GRAFANA_DISCORD_WEBHOOK_URL: ${GRAFANA_DISCORD_WEBHOOK_URL:-https://}

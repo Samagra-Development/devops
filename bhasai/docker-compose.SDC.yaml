@@ -20,3 +20,4 @@ include:
   - ./flowise/docker-compose.SDC.yaml
   - ./app/docker-compose.SDC.yaml
   - ./user_service/docker-compose.SDC.yaml
+  - ./ai_tools/docker-compose.yaml

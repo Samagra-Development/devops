@@ -17,3 +17,4 @@ import ./yt_parser/Caddyfile.SDC
 import ./flowise/Caddyfile.SDC
 import ./app/Caddyfile.SDC
 import ./user_service/Caddyfile.SDC
+import ./ai_tools/Caddyfile.SDC
