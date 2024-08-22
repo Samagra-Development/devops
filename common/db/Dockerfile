@@ -19,6 +19,8 @@ ARG POSTGRES_SSH_PRIVATE_KEY
 # Install OpenSSH
 RUN apk add --update --no-cache openssh openssh-keygen
 
+RUN ssh-keygen -A
+
 # Enable SSH and configure key-based authentication
 RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
 
