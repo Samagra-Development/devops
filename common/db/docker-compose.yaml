@@ -1,7 +1,18 @@
 services:
   db:
-    image: samagragovernance/postgres:1.0.1-pg15
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BARMAN_HOST: ${BARMAN_HOST}
+        BARMAN_SSH_PUBLIC_KEY: ${BARMAN_SSH_PUBLIC_KEY}
+        POSTGRES_SSH_PUBLIC_KEY: ${POSTGRES_SSH_PUBLIC_KEY}
+        POSTGRES_SSH_PRIVATE_KEY: ${POSTGRES_SSH_PRIVATE_KEY}
     restart: always
+    command: -c 'config_file=/etc/postgresql/postgresql.conf' -c 'hba_file=/etc/postgresql/pg_hba.conf'
+    ports:
+      - "5432:5432"
+      - "2222:22"
     volumes:
       - db:/var/lib/postgresql/data
     healthcheck:
