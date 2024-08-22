@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#barman_password=password
-#streaming_barman_password=password
-
-# Prompt user for input
 echo "Enter hostname/fqdn of postgres server:"
 read host_name
 echo "Enter database name to replicate wals:"
@@ -92,14 +88,25 @@ else
     echo "Generating barman configuration file $config_file for streaming backup of database..."
 fi
 
+cat <<EOF > /etc/barman.conf
+[barman]
+barman_home = /backup/barman
+barman_user = barman
+log_file = /var/log/barman/barman.log
+compression = gzip
+reuse_backup = link
+backup_method = rsync
+archiver = on
+EOF
+
 cat <<EOF > $config_file
 [$host_name]
 description = "Main PostgreSQL Database"
 conninfo = host=$host_name user=barman dbname=$db_name password=$barman_password
-ssh_command = ssh postgres@$host_name -p 2222
-backup_method = rsync
-parallel_jobs = 2
-archiver = on
+ssh_command = ssh -q postgres@$host_name -p 2222
+retention_policy_mode = auto
+retention_policy = RECOVERY WINDOW OF 7 days
+wal_retention_policy = main
 EOF
 
 echo "Configuration file $config_file created."
@@ -119,33 +126,5 @@ sudo -u barman bash -c "echo '$host_name:5432:replication:streaming_barman:$stre
 sudo -u barman bash -c "chmod 600 ~/.pgpass"
 echo ".pgpass file created and permissions set."
 
-:' ######## Commented key generation feature
-### Deploying keys to barman
-if [ -f ./id_rsa ]; then
-        echo "Private key found deploying to barman user"
-        mkdir -p $barman_home/.ssh/
-        cp ./id_rsa $barman_home/.ssh/id_rsa
-        cp ./id_rsa.pub $barman_home/.ssh/authorized_keys
-        echo -e "Host *\n\tStrictHostKeyChecking no" > $barman_home/.ssh/config
-        chmod 0600 $barman_home/.ssh/id_rsa
-        echo "">$barman_home/.ssh/known_hosts
-        chown -R barman:barman $barman_home/.ssh/
-else
-        echo "SSH keypair not found , please arrange key pair id_rsa , id_rsa.pub"
-        echo "Rolling back insallation..........................................................."
-        apt-get remove --purge barman -y
-        apt-get autoremove -y
-        exit
-fi
-### SSH deployment
-'
 
-### Set up barman cron job if not already set
-#if ! sudo crontab -u barman -l 2>/dev/null | grep -q "barman cron"; then
-#    echo "Setting up barman cron for receiving wals..."
-#    (sudo crontab -u barman -l 2>/dev/null; echo "* * * * * barman cron") | sudo crontab -u barman -
-#else
-#    echo "barman cron job already set."
-#fi
-
-echo "Barman Installation completed............"
+echo "Barman Installation Completed"
