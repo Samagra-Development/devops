@@ -1,53 +1,43 @@
 FROM samagragovernance/postgres:1.0.1-pg15
 
-ARG ENABLE_BARMAN
-ARG DB_SSH_PRIVATE_KEY
-ARG DB_SSH_PUBLIC_KEY 
-ARG BARMAN_HOST
+# Install OpenSSH
+RUN apk add --update --no-cache openssh openssh-keygen
 
-ENV BARMAN_HOST=$BARMAN_HOST
+RUN ssh-keygen -A
 
-# Check if ENABLE_BARMAN is set to true, and if so, ensure other arguments are provided
-# Check if ENABLE_BARMAN is set to true, and if so, ensure other arguments are provided
-RUN if [ "$ENABLE_BARMAN" = "true" ]; then \
-        : "${DB_SSH_PRIVATE_KEY:?DB_SSH_PRIVATE_KEY is not set}"; \
-        : "${DB_SSH_PUBLIC_KEY:?DB_SSH_PUBLIC_KEY is not set}"; \
-        : "${BARMAN_HOST:?BARMAN_HOST is not set}"; \
-    fi
+# Verify that the host keys exist
+RUN ls -l /etc/ssh/ssh_host_*
 
-ADD config/postgresql.conf.template /etc/postgresql/postgresql.conf.template
-ADD config/pg_hba.conf.template /etc/postgresql/pg_hba.conf.template
+# Enable SSH and configure key-based authentication
+RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
 
-RUN if [ "$ENABLE_BARMAN" = "true" ]; then \
-    apk update && \
-    apk add envsubst && \
-    envsubst < /etc/postgresql/postgresql.conf.template > /etc/postgresql/postgresql.conf && \
-    envsubst < /etc/postgresql/pg_hba.conf.template > /etc/postgresql/pg_hba.conf; \
-    else \
-     ln -s /var/lib/postgresql/data/pg_hba.conf /etc/postgresql/pg_hba.conf &\
-     ln -s /var/lib/postgresql/data/postgresql.conf /etc/postgresql/postgresql.conf; \
-fi
+# Use build argument to add the public key
+ARG DB_SSH_PUBLIC_KEY
+RUN echo "$DB_SSH_PUBLIC_KEY" > /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
 
-     
+# Create the .ssh directory for the postgres user
+RUN mkdir -p /var/lib/postgresql/.ssh && \
+    chmod 700 /var/lib/postgresql/.ssh && \
+    chown postgres:postgres /var/lib/postgresql/.ssh
 
-RUN if [ "$ENABLE_BARMAN" = "true" ]; then \
-    apk update && \
-    apk add openrc openssh-server openssh rsync && \
-    mkdir -p /run/openrc && \
-    touch /run/openrc/softlevel && \
-    ssh-keygen -A && \
-    echo -e "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
-    mkdir -p /var/lib/postgresql/.ssh && \
-    echo "" > /var/lib/postgresql/.ssh/known_hosts && \
-    echo "$DB_SSH_PRIVATE_KEY" | base64 -d > /var/lib/postgresql/.ssh/id_rsa && \
-    echo "$DB_SSH_PUBLIC_KEY" | base64 -d  > /var/lib/postgresql/.ssh/id_rsa.pub && \
-    chmod 0600 /var/lib/postgresql/.ssh/id_rsa && \
-    echo -e "Host *\n\tStrictHostKeyChecking no" > /var/lib/postgresql/.ssh/config && \
-    passwd -u postgres && \
-    chown -R postgres:postgres /var/lib/postgresql/.ssh; \
-fi
+# Use build argument to add the public key for the postgres user
+RUN echo "$DB_SSH_PUBLIC_KEY" > /var/lib/postgresql/.ssh/authorized_keys && \
+    chmod 600 /var/lib/postgresql/.ssh/authorized_keys && \
+    chown postgres:postgres /var/lib/postgresql/.ssh/authorized_keys
 
+
+# Configure SSH daemon
+RUN echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
+RUN echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+RUN echo 'AllowUsers postgres' >> /etc/ssh/sshd_config
+
+RUN chown -R postgres:postgres /etc/ssh
+
+# Set up WAL archive directory
+RUN mkdir -p /var/lib/postgresql/archive && chown postgres:postgres /var/lib/postgresql/archive
+
+USER postgres
+
+ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 22
-EXPOSE 5432
-
-
+COPY entrypoint.sh /
