@@ -10,13 +10,9 @@ C. Set value of `cat /opt/id_rsa.pub | base64 -w 0` in DB_SSH_PUBLIC_KEY (change
 
 ### STEP 2 Follow after the db container is started (only if you have enabled barman)
 
-A. Currently the ssh server doesn't start automatically, run `docker exec -it DB_CONTAINER_ID /usr/sbin/sshd` to start the ssh server inside the db container.
+A. Setup the barman and streaming_barman user which is required to setup barman later.
 
-B. Setup the barman and streaming_barman user which is required to setup barman later.
-
-`docker exec -it DB_CONTAINER_ID bash`
-
-`su - postgres`
+`docker exec -u postgres -it DB_CONTAINER_ID bash`
 
 `createuser --superuser --replication -P barman` Remember the password it will be required to setup barman later.
 
@@ -24,7 +20,7 @@ B. Setup the barman and streaming_barman user which is required to setup barman 
 
 C. Get the public key which will be used to setup barman later.
 
-`cat ~/.ssh/id_rsa.pub` Copy this somewhere as it will be used later in setting up key baed auth with barman.
+`cat ~/.ssh/authorized_keys` Copy this somewhere as it will be used later in setting up key based auth with barman.
 
 now exit from db container using `exit` command twice.
 
@@ -41,12 +37,17 @@ A. Login to barman server and switch to root user using `sudo -i` and install re
 
 `apt-get install build-essential -y`
 
+```exit``` 
+
+```sudo su```
 
 B. Add DNS entry in /etc/hosts file for machine where DB container / service is running.
 
 `vi /etc/hosts` add `POSTGRES_IP   mydb`  replace POSTGRES_IP with the actual IP address of machine where where DB container / service is running.'mydb' would be the HOSTNAME for your db server which will be required in next step during barman setup.
 
-C. Run `make setup-barman` to setup barman.
+
+
+C. ```cd devops```,  Run `make setup-barman` to setup barman.
 
 ```
 - HOSTNAME/DOMAIN name of your server (e.g mydb.example.com , mydb) which we set in STEP 3.B
@@ -72,16 +73,21 @@ E. Add public key of postgres in barman user's .ssh/authorized_keys
 ### STEP 4 add barman's public key (Refer to STEP 3.D) to postgres db user's .ssh/authorized_keys file.
 A. Connect to DB server / container.
 
-`docker exec -it DB_CONTAINER_ID bash`
-
-`su - postgres`
+`docker exec -u postgres -it DB_CONTAINER_ID bash`
 
 `vi ~/.ssh/authorized_keys` PASTE the content copied from STEP 3.D. Now exit from container using `exit` command twice.
 
-### STEP 5  Restart postgres container
 
-Connect to machine where postgres db container/service is running and run `docker restart DB_CONTAINER_ID` and then run `docker exec -it DB_CONTAINER_ID /usr/sbin/sshd`.
+### STEP 6 : Do some modifications.
+1. Go to db machine and exec into the container `docker exec -u postgres -it DB_CONTAINER_ID bash`
 
-### STEP 6 : Test the replication in barman server using barman user after waiting for 2-3 minutes.
+2. type `touch ~/.hushlogin`
+3. Now go to the barman machine and `vi /etc/barman.d/mydb.conf`
+4. Modify the ssh_command, like: ```ssh_command = ssh -q postgres@mydb -p 2222```
+
+### STEP 7 :  Restart postgres container
+1. Connect to machine where postgres db container/service is running and run `docker restart DB_CONTAINER_ID`.
+
+### STEP 8 : Test the replication in barman server using barman user after waiting for 2-3 minutes.
 `barman check mydb` 
 
