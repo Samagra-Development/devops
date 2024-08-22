@@ -1,5 +1,20 @@
 FROM samagragovernance/postgres:1.0.1-pg15
 
+ARG DB_SSH_PUBLIC_KEY 
+ARG BARMAN_HOST
+
+ENV BARMAN_HOST=$BARMAN_HOST
+
+
+ADD config/postgresql.conf.template /etc/postgresql/postgresql.conf.template
+ADD config/pg_hba.conf.template /etc/postgresql/pg_hba.conf.template
+
+RUN apk update && \
+    apk add envsubst && \
+    envsubst < /etc/postgresql/postgresql.conf.template > /etc/postgresql/postgresql.conf && \
+    envsubst < /etc/postgresql/pg_hba.conf.template > /etc/postgresql/pg_hba.conf; 
+
+
 # Install OpenSSH
 RUN apk add --update --no-cache openssh openssh-keygen
 
@@ -12,7 +27,6 @@ RUN ls -l /etc/ssh/ssh_host_*
 RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
 
 # Use build argument to add the public key
-ARG DB_SSH_PUBLIC_KEY
 RUN echo "$DB_SSH_PUBLIC_KEY" > /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
 
 # Create the .ssh directory for the postgres user
@@ -33,11 +47,4 @@ RUN echo 'AllowUsers postgres' >> /etc/ssh/sshd_config
 
 RUN chown -R postgres:postgres /etc/ssh
 
-# Set up WAL archive directory
-RUN mkdir -p /var/lib/postgresql/archive && chown postgres:postgres /var/lib/postgresql/archive
-
 USER postgres
-
-ENTRYPOINT ["/entrypoint.sh"]
-EXPOSE 22
-COPY entrypoint.sh /
