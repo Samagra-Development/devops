@@ -4,7 +4,7 @@
 PROMPT_SERVICE_NAME="Enter Service Name: "
 PROMPT_IMAGE_NAME="Enter Image NAME: "
 PROMPT_SERVICE_PORT="Enter Service Port: "
-PROMPT_FOLDER_NAME="Enter the folder and service name in the format folder/service_name (e.g. common/hello): "
+PROMPT_FOLDER_NAME="Enter the project and service name in the format project/service_name (e.g. common/hello): "
 PROMPT_ABORTING="Aborting."
 EXPOSE_SERVICE="Enter folder/service_name to expose (e.g. common/hello): "
 ENTER_YOUR_CHOICE="Enter your choice: "
