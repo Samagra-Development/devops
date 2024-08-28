@@ -91,4 +91,3 @@ services:
     - /dev/disk/:/dev/disk:ro
     devices:
       - /dev/kmsg:/dev/kmsg
-      
