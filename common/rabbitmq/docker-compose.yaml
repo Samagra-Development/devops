@@ -3,10 +3,10 @@ services:
     image: rabbitmq:3-management
     restart: always
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq:/var/lib/rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?error RABBITMQ_USER is not set}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?error RABBITMQ_PASSWORD is not set}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:?RABBITMQ_DEFAULT_USER is not set}
+      RABBITMQ_DEFAULT_PASSWORD: ${RABBITMQ_DEFAULT_PASSWORD:?RABBITMQ_DEFAULT_PASSWORD is not set}
 
 volumes:
-  rabbitmq_data:
+  rabbitmq:
