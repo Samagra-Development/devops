@@ -3,9 +3,7 @@ volumes:
 
 services:
   vault:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: vault:1.13.3
     restart: always
     environment:
       VAULT_USERNAME: ${VAULT_USERNAME:?VAULT_USERNAME is not set}
