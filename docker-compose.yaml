@@ -1,0 +1,28 @@
+#include:
+ - ./common/monitoring/docker-compose.yaml
+#  - ./common/minio/docker-compose.yaml
+ - ./common/environment/docker-compose.yaml
+#  - ./common/fusionauth/docker-compose.yaml
+ - ./common/uptime/docker-compose.yaml
+#  - ./common/clickhouse/docker-compose.yaml
+#  - ./common/redis/docker-compose.yaml
+ - ./common/db/docker-compose.yaml
+#  - ./common/registry/docker-compose.yaml
+#  - ./common/superset/docker-compose.yaml
+#  - ./common/rabbitmq/docker-compose.yaml
+ - ./c4gt/docker-compose.yaml
+
+
+
+services:
+  caddy:
+    extends:
+      file: common/caddy/docker-compose.yaml
+      service: caddy
+#    volumes:
+#      - project-specific-volume-mappings:/etc/caddy/project-name
+
+
+volumes:
+  caddy_data:
+  caddy_config:
