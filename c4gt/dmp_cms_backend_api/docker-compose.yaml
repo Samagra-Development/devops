@@ -1,0 +1,13 @@
+services:
+  dmp_cms_backend_api:
+      image: ghcr.io/${org}/dmp-cms-backend-api:${DMP_CMS_BACKEND_API_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+      restart: always
+      environment:
+        FLASK_ENV: ${FLASK_ENV:-development}
+        SUPABASE_URL: ${SUPABASE_URL:?SUPABASE_URL is not set}
+        SUPABASE_KEY: ${SUPABASE_KEY:?SUPABASE_KEY is not set}
+        SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is not set}
+        POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?POSTGRES_DB_HOST is not set}
+        POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?POSTGRES_DB_NAME is not set}
+        POSTGRES_DB_USER: ${POSTGRES_DB_USER:?POSTGRES_DB_USER is not set}
+        POSTGRES_DB_PASS: ${POSTGRES_DB_PASS:?POSTGRES_DB_PASS is not set}

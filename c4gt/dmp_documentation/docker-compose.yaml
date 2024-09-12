@@ -1,0 +1,7 @@
+services:
+  dmp_documentation:
+      image: ghcr.io/${org}/dmp-documentation:${DMP_DOCUMENTATION_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+      restart: always
+      environment:
+        API_BASE_URL: ${API_BASE_URL:?API_BASE_URL is not set}
+        API_AUTH_KEY: ${API_AUTH_KEY:?API_AUTH_KEY is not set}

@@ -1,0 +1,24 @@
+services:
+  server:
+      image: ghcr.io/${org}/server:${DMP_CMS_Backend_CRON_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+      restart: always
+      environment:
+        GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:?GITHUB_CLIENT_ID is not set}
+        GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:?GITHUB_CLIENT_SECRET is not set}
+        HOST: ${HOST:?HOST is not set}
+        SUPABASE_URL: ${SUPABASE_URL:?SUPABASE_URL is not set}
+        SUPABASE_KEY: ${SUPABASE_KEY:?SUPABASE_KEY is not set}
+        DISCORD_SERVER_ID: ${DISCORD_SERVER_ID:?DISCORD_SERVER_ID is not set}
+        FLASK_SESSION_KEY: ${FLASK_SESSION_KEY:?FLASK_SESSION_KEY is not set}
+        GithubPAT: ${GithubPAT:?GithubPAT is not set}
+        DB_NAME: ${DB_NAME:?DB_NAME is not set}
+        DB_USER: ${DB_USER:?DB_USER is not set}
+        DB_HOST: ${DB_HOST:?DB_HOST is not set}
+        DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is not set}
+        API_TOKEN: ${API_TOKEN:?API_TOKEN is not set}
+        ASSIGNMENT_ID: ${ASSIGNMENT_ID:?ASSIGNMENT_ID is not set}
+        WEBHOOK_SECRET: ${WEBHOOK_SECRET:?WEBHOOK_SECRET is not set}        
+        POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?POSTGRES_DB_HOST is not set}
+        POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?POSTGRES_DB_NAME is not set}
+        POSTGRES_DB_USER: ${POSTGRES_DB_USER:?POSTGRES_DB_USER is not set}
+        POSTGRES_DB_PASS: ${POSTGRES_DB_PASS:?POSTGRES_DB_PASS is not set}
