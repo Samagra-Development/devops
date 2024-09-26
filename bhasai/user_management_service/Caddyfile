@@ -1,0 +1,3 @@
+{$DOMAIN_NAME}://user-management-service.{$DOMAIN_NAME} {
+    reverse_proxy user_management_service:3000
+}

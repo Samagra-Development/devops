@@ -1,0 +1,51 @@
+services:
+  yt_parser:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/yt-parser:${YT_PARSER_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    restart: always
+    mem_limit: ${YT_PARSER_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${YT_PARSER_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    environment:
+      MINIO_BASE_URL: "minio:9000"
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: yt_parser
+      MINIO_SECURE_CONN: "False"
+      REDIS_CONN: redis://redis:6379/3
+      CELERY_BROKER_URL: redis://redis:6379/3
+      CELERY_RESULT_BACKEND: redis://redis:6379/3    
+      BHASHINI_USERID: ${ULCA_USER_ID}
+      BHASHINI_ULCA_API_KEY: ${ULCA_API_KEY}      
+      AZURE_SUBSCRIPTION_KEY: ${AZURE_SUBSCRIPTION_KEY}
+      WEBHOOK_URL: http://bff:3000/document/processed-webhook/youtube
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+      ASR_SERVICE_PRIORITY: ${ASR_SERVICE_PRIORITY}
+      YOUTUBE_DATA_API_KEY: ${YOUTUBE_DATA_API_KEY}
+    depends_on:
+      - redis
+
+  yt_parser_celery_worker:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/yt-parser:${YT_PARSER_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    command:  celery -A worker worker -P gevent --loglevel=info   
+    restart: always
+    mem_limit: ${YT_PARSER_CELERY_WORKER_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${YT_PARSER_CELERY_WORKER_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/3
+      CELERY_RESULT_BACKEND: redis://redis:6379/3
+      WEBHOOK_URL: http://bff:3000/document/processed-webhook/youtube
+      MINIO_BASE_URL: "minio:9000"
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: yt_parser
+      MINIO_SECURE_CONN: "False"
+      REDIS_CONN: redis://redis:6379/3
+      BHASHINI_USERID: ${ULCA_USER_ID}
+      BHASHINI_ULCA_API_KEY: ${ULCA_API_KEY}
+      AZURE_SUBSCRIPTION_KEY: ${AZURE_SUBSCRIPTION_KEY}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+      ASR_SERVICE_PRIORITY: ${ASR_SERVICE_PRIORITY}
+      YOUTUBE_DATA_API_KEY: ${YOUTUBE_DATA_API_KEY}
+    depends_on:
+      - redis
+  

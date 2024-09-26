@@ -1,0 +1,9 @@
+services: 
+ auth_service:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/auth-service:${AUTH_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${AUTH_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${AUTH_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    environment:
+      FUSIONAUTH_URL: http://fusionauth:9011
+      FUSIONAUTH_KEY: ${FUSIONAUTH_API_KEY} 

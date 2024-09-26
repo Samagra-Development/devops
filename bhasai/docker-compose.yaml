@@ -1,0 +1,20 @@
+include:
+  - ./admin/docker-compose.yaml
+  - ./ai_tools_proxy/docker-compose.yaml
+  - ./auth_service/docker-compose.yaml
+  - ./autotune/docker-compose.yaml
+  - ./bff/docker-compose.yaml
+  - ./dataset_service/docker-compose.yaml
+  - ./deployer/docker-compose.yaml
+  - ./document_service/docker-compose.yaml
+  - ./inboundjs/docker-compose.yaml
+  - ./nodehub/docker-compose.yaml
+  - ./orchestrator/docker-compose.yaml
+  - ./pdf_parser/docker-compose.yaml
+  - ./telemetry/docker-compose.yaml
+  - ./transport_socket/docker-compose.yaml
+  - ./uci_apis/docker-compose.yaml
+  - ./user_management_service/docker-compose.yaml
+  - ./vault/docker-compose.yaml
+  - ./yt_parser/docker-compose.yaml
+  - ./ai_tools/docker-compose.yaml

@@ -1,0 +1,3 @@
+{$DOMAIN_NAME}://flowise.{$DOMAIN_NAME} {
+    reverse_proxy flowise:3000
+}

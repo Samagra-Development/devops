@@ -1,0 +1,23 @@
+include:
+  - ./admin/docker-compose.SDC.yaml
+  - ./ai_tools_proxy/docker-compose.SDC.yaml
+  - ./auth_service/docker-compose.SDC.yaml
+  - ./autotune/docker-compose.SDC.yaml
+  - ./bff/docker-compose.SDC.yaml
+  - ./dataset_service/docker-compose.SDC.yaml
+  - ./deployer/docker-compose.SDC.yaml
+  - ./document_service/docker-compose.SDC.yaml
+  - ./inboundjs/docker-compose.SDC.yaml
+  - ./nodehub/docker-compose.SDC.yaml
+  - ./orchestrator/docker-compose.SDC.yaml
+  - ./pdf_parser/docker-compose.SDC.yaml
+  - ./telemetry/docker-compose.SDC.yaml
+  - ./transport_socket/docker-compose.SDC.yaml
+  - ./uci_apis/docker-compose.SDC.yaml
+  - ./user_management_service/docker-compose.SDC.yaml
+  - ./vault/docker-compose.yaml
+  - ./yt_parser/docker-compose.SDC.yaml
+  - ./flowise/docker-compose.SDC.yaml
+  - ./app/docker-compose.SDC.yaml
+  - ./user_service/docker-compose.SDC.yaml
+  - ./ai_tools/docker-compose.yaml
