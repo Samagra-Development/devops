@@ -15,13 +15,13 @@ on:
       - deploy-trigger
 
 jobs:
-  compare_environments:
+  validate_environments:
     runs-on: ubuntu-latest
     outputs:
-      common_environments: ${{ steps.compare_environments.outputs.common_environments }}
+      validate_environments: ${{ steps.validate_environments.outputs.validate_environments }}
     steps:
-      - name: Compare environment 
-        id: compare_environments
+      - name: Validate environment 
+        id: validate_environments
         run: |
           CLIENT_PAYLOAD_ENVIRONMENT='${{ toJson(github.event.client_payload.environment) }}'
           
@@ -49,10 +49,10 @@ jobs:
 
   deployment:
     runs-on: ubuntu-latest
-    needs: compare_environments
+    needs: validate_environments
     strategy:
       matrix:
-        env: ${{ fromJson(needs.compare_environments.outputs.common_environments) }}
+        env: ${{ fromJson(needs.validate_environments.outputs.common_environments) }}
     name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || matrix.env }}
 
     steps:
