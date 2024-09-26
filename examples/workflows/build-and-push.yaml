@@ -69,5 +69,5 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.PAT }}" \
-            https://api.github.com/repos/${{ github.repository_owner }}/${{ vars.DEVOPS_REPO_NAME || 'devops' }}/dispatches \
-            -d '{"event_type":"deploy-trigger","client_payload":{"services":"${{ vars.SERVICE  || env.SERVICE }}", "environment":${{ secrets.ENABLE_AUTO_DEPLOY }}}}'
+            https://api.github.com/repos/${{ github.repository_owner }}/${{ secrets.DEVOPS_REPO_NAME || 'devops' }}/dispatches \
+            -d '{"event_type":"deploy-trigger","client_payload":{"services":"${{ secrets.SERVICE  || env.SERVICE }}", "environment":${{ secrets.ENABLE_AUTO_DEPLOY }}}}'
