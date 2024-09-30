@@ -58,3 +58,22 @@ Raise a PR with the following changes
         reverse_proxy <service-name-in-docker-compose>:<service-port>
     }
     ```
+
+### 3. Adding environment variables
+- Create a global.env file and add all the service-urls and service-creds. Import it to all stateless services. eg:
+
+- For environments specific to service, set them under environment section of the service in docker-compose file. And add variables to sample.env files.
+eg:
+```
+services: 
+ auth_service:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/auth-service:${AUTH_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${AUTH_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${AUTH_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    env_file:
+      - ../../global.env
+    environment:
+      FUSIONAUTH_URL: http://fusionauth:9011
+      FUSIONAUTH_KEY: ${FUSIONAUTH_API_KEY}
+```
