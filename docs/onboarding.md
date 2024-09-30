@@ -34,14 +34,20 @@ Reference:
 Example:  [/examples/workflows/docker-test.yaml](../examples/workflows/docker-test.yaml)
 
 ### 4. To Auto Deploy Service
-- Allow [access via fine-grained] personal access tokens in the organization(https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens)
-- [Configure actions] to be triggered from another repository within the same organization(https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository)
-- Generate a Fine-Grained token (Personal Access Token) permissions required - Actions(Read and Write) and Content(Read and Write)
-- Store the PAT as repository secret, set name field as `PAT` 
-- If devops repository name is not `devops` set, the Repository Secret named `DEVOPS_REPO_NAME` and value as the name of devops repository
-- If your repository name in snake_case differs from the service name, set the Repositor Secret named `SERVICE` and value as the name of service name in snake_case
-- Create a repository secret `ENABLE_AUTO_DEPLOY` and set value for auto deployment to run for all environment given here , eg:`["main", "dev"]`
-- In your devops repository create a secret named `ALLOW_EXTERNAL_TRIGGER` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
+
+  #### Assumptions made:
+    SERVICE_REPO: Repository from which the service is deployed.
+    DEVOPS_REPO: Repository where deployment is triggered.
+  #### In SERVICE_REPO
+  - Allow [access via fine-grained](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens) personal access tokens in the organization
+  - [Configure actions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository) to be triggered from another repository within the same organization
+  - Generate a Fine-Grained token (Personal Access Token) permissions required - Actions(Read and Write) and Content(Read and Write)
+  - Store the PAT as repository secret, set name field as `PAT` 
+  - If devops repository name is not `devops` set, the Repository Secret named `DEVOPS_REPO_NAME` and value as the name of devops repository
+  - If your repository name in snake_case differs from the service name, set the Repositor Secret named `SERVICE` and value as the name of service name in snake_case
+  - Create a repository secret `ENABLE_AUTO_DEPLOY` and set value for auto deployment to run for all environment given here , eg:`["dev", "stage"]`
+ #### In DEVOPS_REPO
+  - Create a secret named `ALLOW_EXTERNAL_TRIGGER` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
 
 ## Adding your service
 
