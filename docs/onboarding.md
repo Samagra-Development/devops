@@ -44,10 +44,10 @@ Example:  [/examples/workflows/docker-test.yaml](../examples/workflows/docker-te
   - Generate a Fine-Grained token (Personal Access Token) permissions required - Actions(Read and Write) and Content(Read and Write)
   - Store the PAT as repository secret, set name field as `PAT` 
   - If devops repository name is not `devops`, set the Repository Secret named `DEVOPS_REPO_NAME` and value as the name of devops repository
-  - If your repository name in snake_case differs from the service name, set the Repositor Secret named `SERVICE` and value as the name of service name in snake_case
-  - Create a repository secret named `TARGET_DEPLOY_ENVIRONMENTS` and set value for targeted auto deployment to run for all environment given here, eg:`["dev", "stage"]`
+  - If your repository name in snake_case differs from the service name, set the Repository Secret named `SERVICE_NAME` and value as the name of service name in snake_case
+  - Create a repository secret named `ENABLE_AUTO_DEPLOY` and set value for targeted auto deployment to run for all environment given here, eg:`["dev", "stage"]`
  #### In DEVOPS_REPO
-  - Create a secret named `PERMITTED_EXTERNAL_ENVIRONMENTS` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
+  - Create a secret named `PERMIT_AUTO_DEPLOY` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
 
 ## Adding your service
 

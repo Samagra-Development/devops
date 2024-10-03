@@ -26,15 +26,14 @@ jobs:
           CLIENT_PAYLOAD_ENVIRONMENT='${{ toJson(github.event.client_payload.environment) }}'
           
           # Write the secret to a temporary file
-          echo '${{ secrets.PERMITTED_EXTERNAL_ENVIRONMENTS }}' > permitted_external_environments.json
-
+          echo '${{ secrets.PERMIT_AUTO_DEPLOY }}' > permit_auto_deploy.json
           
-          PERMITTED_EXTERNAL_ENVIRONMENTS=$(cat permitted_external_environments.json)
+          PERMIT_AUTO_DEPLOY=$(cat permit_auto_deploy.json)
 
-          echo "PERMITTED_EXTERNAL_ENVIRONMENTS: $PERMITTED_EXTERNAL_ENVIRONMENTS"
+          echo "PERMIT_AUTO_DEPLOY: $PERMIT_AUTO_DEPLOY"
           
           # Find common values using jq
-          VALIDATED_ENVIRONMENTS=$(jq -n --argjson client "$CLIENT_PAYLOAD_ENVIRONMENT" --argjson allow "$PERMITTED_EXTERNAL_ENVIRONMENTS" \
+          VALIDATED_ENVIRONMENTS=$(jq -n --argjson client "$CLIENT_PAYLOAD_ENVIRONMENT" --argjson allow "$PERMIT_AUTO_DEPLOY" \
             '[ $client[] | select($allow[] == .) ]' | jq -c '.')
 
           # Setting to dev if no common environment found 
