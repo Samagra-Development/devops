@@ -43,11 +43,11 @@ Example:  [/examples/workflows/docker-test.yaml](../examples/workflows/docker-te
   - [Configure actions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository) to be triggered from another repository within the same organization
   - Generate a Fine-Grained token (Personal Access Token) permissions required - Actions(Read and Write) and Content(Read and Write)
   - Store the PAT as repository secret, set name field as `PAT` 
-  - If devops repository name is not `devops` set, the Repository Secret named `DEVOPS_REPO_NAME` and value as the name of devops repository
+  - If devops repository name is not `devops`, set the Repository Secret named `DEVOPS_REPO_NAME` and value as the name of devops repository
   - If your repository name in snake_case differs from the service name, set the Repositor Secret named `SERVICE` and value as the name of service name in snake_case
-  - Create a repository secret `ENABLE_AUTO_DEPLOY` and set value for auto deployment to run for all environment given here , eg:`["dev", "stage"]`
+  - Create a repository secret named `TARGET_DEPLOY_ENVIRONMENTS` and set value for targeted auto deployment to run for all environment given here, eg:`["dev", "stage"]`
  #### In DEVOPS_REPO
-  - Create a secret named `ALLOW_EXTERNAL_TRIGGER` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
+  - Create a secret named `PERMITTED_EXTERNAL_ENVIRONMENTS` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
 
 ## Adding your service
 

@@ -26,33 +26,33 @@ jobs:
           CLIENT_PAYLOAD_ENVIRONMENT='${{ toJson(github.event.client_payload.environment) }}'
           
           # Write the secret to a temporary file
-          echo '${{ secrets.ALLOW_EXTERNAL_TRIGGER }}' > allow_external_trigger.json
+          echo '${{ secrets.PERMITTED_EXTERNAL_ENVIRONMENTS }}' > permitted_external_environments.json
 
           
-          ALLOW_EXTERNAL_TRIGGER=$(cat allow_external_trigger.json)
+          PERMITTED_EXTERNAL_ENVIRONMENTS=$(cat permitted_external_environments.json)
 
-          echo "ALLOW_EXTERNAL_TRIGGER: $ALLOW_EXTERNAL_TRIGGER"
+          echo "PERMITTED_EXTERNAL_ENVIRONMENTS: $PERMITTED_EXTERNAL_ENVIRONMENTS"
           
           # Find common values using jq
-          COMMON_ENVIRONMENTS=$(jq -n --argjson client "$CLIENT_PAYLOAD_ENVIRONMENT" --argjson allow "$ALLOW_EXTERNAL_TRIGGER" \
+          VALIDATED_ENVIRONMENTS=$(jq -n --argjson client "$CLIENT_PAYLOAD_ENVIRONMENT" --argjson allow "$PERMITTED_EXTERNAL_ENVIRONMENTS" \
             '[ $client[] | select($allow[] == .) ]' | jq -c '.')
 
           # Setting to dev if no common environment found 
-          if [ "$COMMON_ENVIRONMENTS" == "" ]; then
-            COMMON_ENVIRONMENTS='["dev"]'
+          if [ "$VALIDATED_ENVIRONMENTS" == "" ]; then
+          VALIDATED_ENVIRONMENTS='["dev"]'
           fi
           
-          echo "COMMON_ENVIRONMENTS: $COMMON_ENVIRONMENTS"
+          echo "VALIDATED_ENVIRONMENTS: $VALIDATED_ENVIRONMENTS"
           
           # Export environment variable and write to file
-          echo "common_environments=$COMMON_ENVIRONMENTS" >> $GITHUB_OUTPUT
+          echo "validated_environments=$VALIDATED_ENVIRONMENTS" >> $GITHUB_OUTPUT
 
   deployment:
     runs-on: ubuntu-latest
     needs: validate_environments
     strategy:
       matrix:
-        env: ${{ fromJson(needs.validate_environments.outputs.common_environments) }}
+        env: ${{ fromJson(needs.validate_environments.outputs.validated_environments) }}
     name:  Deploy ${{ inputs.services ||  github.event.client_payload.services }} in ${{inputs.environment || matrix.env }}
 
     steps:
