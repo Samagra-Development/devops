@@ -1,0 +1,8 @@
+services:
+  pgweb:
+    image: sosedoff/pgweb
+    restart: always
+    depends_on:
+    - db
+    environment:
+    - DATABASE_URL=${PGWEB_DATABASE_URL}
