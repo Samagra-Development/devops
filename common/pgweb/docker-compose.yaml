@@ -5,4 +5,4 @@ services:
     depends_on:
     - db
     environment:
-    - DATABASE_URL=${PGWEB_DATABASE_URL}
+    - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/pgweb?sslmode=disable
