@@ -14,3 +14,18 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
     - targets: ['kong:8001']
+  - job_name: 'gpu-operator'
+    scrape_interval: 5s
+    metrics_path: '/gpu-operator/metrics'
+    static_configs:
+    - targets: ['metrics.k8s.bhasai.samagra.io']
+  - job_name: 'dcgm-exporter'
+    scrape_interval: 5s
+    metrics_path: '/dcgm-exporter/metrics'
+    static_configs:
+    - targets: ['metrics.k8s.bhasai.samagra.io']
+  - job_name: 'kong-gateway-admin'
+    scrape_interval: 5s
+    metrics_path: '/kong-gateway-admin/metrics'
+    static_configs:
+    - targets: ['metrics.k8s.bhasai.samagra.io']
