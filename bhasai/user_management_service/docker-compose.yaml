@@ -1,0 +1,11 @@
+services:
+  user_management_service:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/user-management-service:${USER_MANAGEMENT_SERVICE_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${USER_MANAGEMENT_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${USER_MANAGEMENT_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    depends_on:
+      db:
+        condition: service_healthy
+    environment: 
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/user_management_service"

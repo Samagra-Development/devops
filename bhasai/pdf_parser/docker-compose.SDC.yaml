@@ -1,0 +1,78 @@
+services:
+  pdf_parser:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/pdf-parser:${PDF_PARSER_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    mem_limit: ${PDF_PARSER_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${PDF_PARSER_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    command: bash -c  "./setup.sh && python manage.py runserver 0.0.0.0:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: always
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      BHASHINI_API_KEY: ${BHASHINI_API_KEY}
+      TESSDATA_PREFIX: "/usr/share/tesseract-ocr/5/tessdata" 
+      MINIO_BASE_URL: ${DOMAIN_SCHEME:-https}://cdn-api.${DOMAIN_NAME}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: pdf_parser
+      MINIO_SECURE_CONN: "True"
+      ENABLE_TRANSLATE: ${ENABLE_TRANSLATE}
+      ENABLE_SUMMARIZE: ${ENABLE_SUMMARIZE}
+      ENABLE_IMAGE_PARSING: ${ENABLE_IMAGE_PARSING}
+      SPLIT: ${SPLIT:-5}
+      PARALLEL_FACTOR: ${PARALLEL_FACTOR:-2}
+      REDIS_CONN: redis://redis:6379/0
+      TORCH_DEVICE: ${TORCH_DEVICE:-cuda}
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+      PDF_PARSER_MAX_RETRIES : ${PDF_PARSER_MAX_RETRIES:-3}
+      PDF_PARSER_SECRET_KEY : ${PDF_PARSER_SECRET_KEY}
+      AZURE_TRANSLATE_KEY : ${AZURE_TRANSLATE_KEY}
+      TRANSLATION_SERVICES : ${TRANSLATION_SERVICES:-["azure", "bhasini"]}
+    depends_on:
+      - redis
+
+  pdf_parser_celery_worker:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/pdf-parser:${PDF_PARSER_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    command: bash -c "./setup.sh && celery -A pdf_parser worker -P solo -l info"
+    restart: always
+    mem_limit: ${PDF_PARSER_CELERY_WORKER_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${PDF_PARSER_CELERY_WORKER_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      BHASHINI_API_KEY: ${BHASHINI_API_KEY}
+      TESSDATA_PREFIX: "/usr/share/tesseract-ocr/5/tessdata" 
+      MINIO_BASE_URL: ${DOMAIN_SCHEME:-https}://cdn-api.${DOMAIN_NAME}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: pdf_parser
+      MINIO_SECURE_CONN: "True"
+      ENABLE_TRANSLATE: ${ENABLE_TRANSLATE}
+      ENABLE_SUMMARIZE: ${ENABLE_SUMMARIZE}
+      ENABLE_IMAGE_PARSING: ${ENABLE_IMAGE_PARSING}
+      SPLIT: ${SPLIT:-5}
+      PARALLEL_FACTOR: ${PARALLEL_FACTOR:-2}
+      REDIS_CONN: redis://redis:6379/0
+      TORCH_DEVICE: ${TORCH_DEVICE:-cuda}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+      PDF_PARSER_MAX_RETRIES : ${PDF_PARSER_MAX_RETRIES:-3}
+      PDF_PARSER_SECRET_KEY : ${PDF_PARSER_SECRET_KEY}
+      AZURE_TRANSLATE_KEY : ${AZURE_TRANSLATE_KEY}
+      TRANSLATION_SERVICES : ${TRANSLATION_SERVICES:-["azure", "bhasini"]}
+    depends_on:
+      - redis

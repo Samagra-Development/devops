@@ -1,0 +1,22 @@
+  services:
+    ai_tools_proxy:
+      image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/ai-tools-proxy:${AI_TOOLS_PROXY_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+      restart: always
+      mem_limit: ${AI_TOOLS_PROXY_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+      cpus: ${AI_TOOLS_PROXY_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+      environment:
+        DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/ai_tools_proxy"
+        DEFAULT_RETRY_COUNT: ${DEFAULT_RETRY_COUNT:-3}
+        DEFAULT_TIMEOUT: ${DEFAULT_TIMEOUT:-30000}
+        ULCA_API_KEY: ${ULCA_API_KEY}
+        ULCA_CONFIG_URL: ${ULCA_CONFIG_URL}
+        ULCA_USER_ID: ${ULCA_USER_ID}
+        MINIO_ENDPOINT: ${DOMAIN_SCHEME:-https}://cdn-api.${DOMAIN_NAME}
+        MINIO_PORT: 443
+        MINIO_SECURE_CONN: "True"
+        MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+        MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+        MINIO_BUCKET: ai-tools-proxy
+        ENVIRONMENT: ${env:-dev}
+        TELEMETRY_URL: http://telemetry:3000
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
