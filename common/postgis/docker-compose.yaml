@@ -10,8 +10,8 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_USER: ${POSTGIS_USER:?POSTGIS_USER is not set}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGIS_PASSWORD is not set}
+      POSTGIS_USER: ${POSTGIS_USER:?POSTGIS_USER is not set}
+      POSTGIS_PASSWORD: ${POSTGIS_PASSWORD:?POSTGIS_PASSWORD is not set}
 
 volumes:
   postgis:
