@@ -27,13 +27,27 @@ Example: [/examples/workflows/build-and-push.yaml](../examples/workflows/build-a
 > In case you see 403 error, checkout [this](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#github-actions-access-for-packages-scoped-to-organizations)
 
 
-
 Reference:
 - For further clarification and detailed instructions, you can refer to the  [GitHub documentation](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages).
 
 ### 3. Add a workflow to test your image
 Example:  [/examples/workflows/docker-test.yaml](../examples/workflows/docker-test.yaml)
 
+### 4. To Auto Deploy Service
+
+  #### Assumptions made:
+    SERVICE_REPO: Repository from which the service is deployed.
+    DEVOPS_REPO: Repository where deployment is triggered.
+  #### In SERVICE_REPO
+  - Allow [access via fine-grained](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization#restricting-access-by-fine-grained-personal-access-tokens) personal access tokens in the organization
+  - [Configure actions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository) to be triggered from another repository within the same organization
+  - Generate a Fine-Grained token (Personal Access Token) permissions required - Actions(Read and Write) and Content(Read and Write)
+  - Store the PAT as repository secret, set name field as `PAT` 
+  - If devops repository name is not `devops`, set the Repository Secret named `DEVOPS_REPO_NAME` and value as the name of devops repository
+  - If your repository name in snake_case differs from the service name, set the Repository Secret named `SERVICE_NAME` and value as the name of service name in snake_case
+  - Create a repository secret named `ENABLE_AUTO_DEPLOY` and set value for targeted auto deployment to run for all environment given here, eg:`["dev", "stage"]`
+ #### In DEVOPS_REPO
+  - Create a secret named `PERMIT_AUTO_DEPLOY` and set value as only allowed environments here can be triggered through other repository, eg: `["dev"]`
 
 ## Adding your service
 
