@@ -1,0 +1,20 @@
+services:
+  deployer:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/deployer:${DEPLOYER_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${DEPLOYER_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${DEPLOYER_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/deployer?sslmode=disable&connect_timeout=100"
+      VERCEL_TOKEN: ${DEPLOYER_VERCEL_TOKEN}
+      PWA_REPO: ${DEPLOYER_PWA_REPO}
+      APP_ENV: ${DEPLOYER_APP_ENV}
+      SELF_BASE_URL: ${DOMAIN_SCHEME:-https}://deployer.${DOMAIN_NAME}
+      MINIO_BUCKETNAME: deployer
+      STORAGE_ENDPOINT: ${DOMAIN_SCHEME:-https}://cdn-api.${DOMAIN_NAME}
+      STORAGE_PORT: 443
+      STORAGE_USE_SSL: 'true'
+      STORAGE_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      STORAGE_SECRET_KEY: ${MINIO_SECRET_KEY}
+      STORAGE_MODE: "minio"
+      AUTH_SERVICE_URL: http://auth_service:3000

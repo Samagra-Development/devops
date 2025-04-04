@@ -1,0 +1,39 @@
+services:
+  bff:
+    image: ${DOCKER_REGISTRY_URL:-ghcr.io}/${org}/bff:${BFF_IMAGE_TAG:-${DEFAULT_IMAGE_TAG:?DEFAULT_IMAGE_TAG is not set}}
+    restart: always
+    mem_limit: ${BFF_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${BFF_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      BFF_BASE_URL: http://bff:3000
+      EXCEL_PARSER_URL: http://excel_parser:8000
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/bff?sslmode=disable&connect_timeout=100"
+      MINIO_PDF_BUCKET: bff
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_ENDPOINT: ${DOMAIN_SCHEME:-https}://cdn-api.${DOMAIN_NAME}
+      MINIO_PORT: 443
+      MINIO_SECURE_CONN: "True"
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      PDF_PARSER_BASE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/pdf-parser
+      PDF_SPLIT: '50'
+      REDIS_DB: 8
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      OUTBOUND_BASE_URL: http://inboundjs:3000/outbound
+      TRANSPORT_SOCKET_BASE_URL: http://transport_socket:3000
+      UCI_APIS_BASE_URL: http://uci_apis:3000
+      ULCA_API_KEY: ${ULCA_API_KEY}
+      ULCA_CONFIG_URL: ${ULCA_CONFIG_URL}
+      ULCA_USER_ID: ${ULCA_USER_ID}
+      YT_PARSER_URL: http://yt_parser:8000
+      REGISTRY_URL: https://github.com/BharatSahAIyak/packages/blob/main/packages/transformers/registry.json
+      INBOUNDJS_BASE_URL: http://inboundjs:3000
+      DOCUMENT_SERVICE_BASE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/document-service
+      AZURE_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/ai-tools/text_translation/azure_dict/remote/
+      USER_SERVICE_ADMIN_API_KEY: ${ADMIN_API_KEY}

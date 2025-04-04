@@ -1,0 +1,22 @@
+volumes:
+  vault:
+
+services:
+  vault:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      VAULT_USERNAME: ${VAULT_USERNAME:?VAULT_USERNAME is not set}
+      VAULT_PASSWORD: ${VAULT_PASSWORD:?VAULT_PASSWORD is not set}
+    volumes:
+      - vault:/vault/file
+      - ./vault.json:/vault/config/vault.json
+      - ./admin-policy.hcl:/vault/policies/admin-policy.hcl
+      - ./vault-init.sh:/vault-init.sh
+      - ../../.env:/bhasai/.env
+      - ./:/bhasai/
+    cap_add:
+      - IPC_LOCK
+    command: sh -c "bash vault-init.sh" 

@@ -1,0 +1,3 @@
+{$DOMAIN_NAME}://pdf-parser.{$DOMAIN_NAME} {
+    reverse_proxy pdf_parser:8000
+}

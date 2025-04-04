@@ -1,0 +1,3 @@
+{$DOMAIN_NAME}://inboundjs.{$DOMAIN_NAME} {
+    reverse_proxy inboundjs:3000
+}

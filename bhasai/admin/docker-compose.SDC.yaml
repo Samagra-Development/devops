@@ -1,0 +1,17 @@
+services:
+  admin:
+    build:
+      context: https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${org}/admin.git#${ADMIN_GITHUB_BRANCH:-${DEFAULT_GITHUB_BRANCH:?DEFAULT_GITHUB_BRANCH is not set}}
+      args:
+        NEXT_PUBLIC_UCI_API_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/uci-apis
+        NEXT_PUBLIC_BFF_API_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/bff
+        NEXT_PUBLIC_SOCKET_URL:  ${DOMAIN_SCHEME:-https}://{DOMAIN_NAME}/transport-socket
+        NEXT_PUBLIC_AUTH_SERVICE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/auth-service
+        NEXT_PUBLIC_DATASET_SERVICE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/dataset-service
+        NEXT_PUBLIC_DOC_SERVICE_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/document-service
+        NEXT_PUBLIC_PWA_DEPLOYER_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/deployer
+        NEXT_PUBLIC_TELEMETRY_API_URL:  ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/telemetry
+        NEXT_PUBLIC_FLOWISE_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/flowise
+        NEXT_PUBLIC_AUTOTUNE_API_URL: ${DOMAIN_SCHEME:-https}://${DOMAIN_NAME}/autotune
+        SERVE_PATH: "/admin"
+    restart: always

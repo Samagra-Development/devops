@@ -1,0 +1,20 @@
+services:
+  user_service:
+    image: samagragovernance/esamwad-user-service:latest 
+    restart: always
+    mem_limit: ${USER_SERVICE_MEM_LIMIT:-${DEFAULT_MEM_LIMIT:-256m}}
+    cpus: ${USER_SERVICE_CPU_LIMIT:-${DEFAULT_CPU_LIMIT:-0.5}}
+    environment:
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - ALLOW_DEFAULT_OTP=${ALLOW_DEFAULT_OTP:-false}
+      - DEFAULT_OTP=${DEFAULT_OTP:-1234}
+      - DEFAULT_OTP_USERS=${DEFAULT_OTP_USERS:-[]}
+      - DEFAULT_USER_PASSWORD=${DEFAULT_USER_PASSWORD}
+      - DEFAULT_USER_PASSWORD="http://fusionauth:9011"
+      - FUSIONAUTH_OLD_BASE_URL"="http://fusionauth:9011"
+      - GUPSHUP_BASEURL="http://enterprise.smsgupshup.com/GatewayAPI/rest"
+      - GUPSHUP_OTP_TEMPLATE=${GUPSHUP_OTP_TEMPLATE}
+      - GUPSHUP_PASSWORD=${GUPSHUP_PASSWORD}
+      - GUPSHUP_USERNAME=${GUPSHUP_USERNAME}
+      - OTP_EXPIRY=${OTP_EXPIRY:-30}
+      - APP_${FUSIONAUTH_APP_ID}="{"host":"http://fusionauth:9011","salt":"${FUSIONAUTH_SALT}","apiKey":"${FUSIONAUTH_API_KEY}","encryption":{"enabled":false}}"

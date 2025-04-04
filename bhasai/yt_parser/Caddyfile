@@ -1,0 +1,3 @@
+{$DOMAIN_NAME}://yt-parser.{$DOMAIN_NAME} {
+    reverse_proxy yt_parser:8000
+}
